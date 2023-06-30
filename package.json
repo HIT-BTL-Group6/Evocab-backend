@@ -1,0 +1,49 @@
+{
+    "name": "evocab-app",
+    "version": "1.7.0",
+    "description": "Create an effective English vocabulary learning app called EVOCAB",
+    "main": "src/index.js",
+    "repository": "https://github.com/HIT-BTL-Group6",
+    "author": "",
+    "license": "MIT",
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon src/index.js",
+        "prettier": "prettier --check **/*.js",
+        "prettier:fix": "prettier --write **/*.js"
+    },
+    "keywords": [
+        "node",
+        "node.js",
+        "express",
+        "rest",
+        "api",
+        "mongodb",
+        "mongoose",
+        "es6",
+        "joi",
+        "prettier"
+    ],
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "http-status": "^1.4.0",
+        "joi": "^17.3.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongo-sanitize": "^1.1.0",
+        "mongoose": "^5.7.7",
+        "morgan": "^1.9.1",
+        "nodemailer": "^6.3.1",
+        "validator": "^13.0.0",
+        "winston": "^3.2.1",
+        "xss-clean": "^0.1.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.0",
+        "prettier": "^2.0.5"
+    }
+}
