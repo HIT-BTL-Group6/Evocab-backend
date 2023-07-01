@@ -24,13 +24,13 @@ The environment variables can be found and modified in the `.env` file. They com
 PORT=3000
 
 # URL of the Mongo DB
-MONGODB_URL=mongodb://127.0.0.1:27017/evocab
+MONGODB_URL=mongodb://127.0.0.1:27017/EVOCAB-Backend
 
 # JWT
 # JWT secret key
 JWT_SECRET_KEY=evocabbackend
 # Number of minutes after which an access token expires
-JWT_ACCESS_EXPIRES_IN=
+JWT_ACCESS_EXPIRES_IN=30
 ```
 
 ## Project Structure
