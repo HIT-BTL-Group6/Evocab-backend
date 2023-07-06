@@ -37,7 +37,7 @@ const wordSchema = new Schema(
         },
         role: {
             type: String,
-            enum: ['user', 'admin'],
+            camelCase: ['user', 'admin'],
             default: 'user',
         },
         topic_id: {
@@ -54,19 +54,6 @@ const wordSchema = new Schema(
 // add plugin that converts mongoose to json
 wordSchema.plugin(toJSON);
 wordSchema.plugin(paginate);
-
-/**
- * Check if word is taken
- * @param {string} word - The word to check
- * @param {ObjectId} [excludeWordId] - The ID of the word to be excluded
- * @returns {Promise<boolean>}
- */
-// Static method to check if a word exists
-wordSchema.statics.isWordTaken = async function (word, excludeWordId) {
-    const existingWord = await this.findOne({ word, _id: { $ne: excludeWordId } });
-    return !!existingWord;
-};
-
 const Word = mongoose.model('Word', wordSchema);
 
 module.exports = Word;
