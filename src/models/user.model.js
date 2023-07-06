@@ -60,8 +60,9 @@ const userSchema = new Schema(
             enum: roles,
             default: 'user',
         },
-        topic_id: {
-            type: String,
+        topicId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Topic',
             default: null,
         },
         isActive: {
@@ -90,6 +91,17 @@ userSchema.plugin(paginate);
  */
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
     const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+    return !!user;
+};
+
+/**
+ * Check if username is taken
+ * @param {string} username - The user's username
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
+ * @returns {Promise<boolean>}
+ */
+userSchema.statics.isUsernameTaken = async function (username, excludeUserId) {
+    const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
     return !!user;
 };
 
