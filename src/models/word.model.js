@@ -37,10 +37,10 @@ const wordSchema = new Schema(
         },
         role: {
             type: String,
-            camelCase: ['user', 'admin'],
+            enum: ['user', 'admin'],
             default: 'user',
         },
-        topic_id: {
+        topicId: {
             type: Schema.Types.ObjectId,
             ref: 'Topic',
             required: [true, 'Please provide the topic ID!'],
@@ -54,6 +54,7 @@ const wordSchema = new Schema(
 // add plugin that converts mongoose to json
 wordSchema.plugin(toJSON);
 wordSchema.plugin(paginate);
+
 const Word = mongoose.model('Word', wordSchema);
 
 module.exports = Word;
