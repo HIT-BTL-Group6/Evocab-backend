@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const validator = require('validator');
-const roles = require('../config/roles');
 const { toJSON, paginate } = require('./plugins');
 
 const Schema = mongoose.Schema;
@@ -25,7 +24,9 @@ const userSchema = new Schema(
                 }
             },
             private: true, // used by the toJSON plugin
+            select: false,
         },
+        //  passwordConfirm:,
         email: {
             type: String,
             required: true,
@@ -38,7 +39,13 @@ const userSchema = new Schema(
                 }
             },
         },
-        dateOfBirth: Date,
+        emailToken: {
+            type: String,
+        },
+        emailExpires: {
+            type: Date,
+        },
+        age: Number,
         fullname: {
             type: String,
             max: 100,
@@ -57,7 +64,7 @@ const userSchema = new Schema(
         },
         role: {
             type: String,
-            enum: roles,
+            enum: ['admin', 'user'],
             default: 'user',
         },
         topicId: {
@@ -113,21 +120,6 @@ userSchema.statics.isUsernameTaken = async function (username, excludeUserId) {
 userSchema.methods.isPasswordMatch = async function (password) {
     const user = this;
     return bcrypt.compare(password, user.password);
-};
-
-userSchema.methods.getAge = function () {
-    const currentDate = new Date();
-    const birthDate = new Date(this.dateOfBirth);
-
-    const age = currentDate.getFullYear() - birthDate.getFullYear();
-    const monthDiff = currentDate.getMonth() - birthDate.getMonth();
-    const dayDiff = currentDate.getDate() - birthDate.getDate();
-
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-        age--;
-    }
-
-    this.age = age;
 };
 
 userSchema.pre('save', async function (next) {
