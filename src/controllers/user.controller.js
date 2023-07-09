@@ -26,7 +26,6 @@ const getUser = catchAsync(async (req, res, next) => {
 
 const createUser = catchAsync(async (req, res, next) => {
     const userData = req.body;
-    console.log(userData);
     const user = await userService.createUser(userData);
     res.status(httpStatus.CREATED).json({
         code: httpStatus.CREATED,

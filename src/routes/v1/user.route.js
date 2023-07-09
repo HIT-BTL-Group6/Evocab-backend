@@ -3,8 +3,11 @@ const validate = require('../../middlewares/validate.middleware');
 const { userValidation } = require('../../validations');
 const { userController } = require('../../controllers');
 const roles = require('../../middlewares/role.middleware');
+const authMiddleware = require('../../middlewares/auth.middleware');
 
 const userRouter = express.Router();
+
+// userRouter.use(authMiddleware);
 
 userRouter
     .route('/')
