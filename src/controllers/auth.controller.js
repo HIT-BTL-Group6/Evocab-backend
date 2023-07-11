@@ -26,6 +26,7 @@ const login = catchAsync(async (req, res, next) => {
 const forgotPassword = catchAsync(async (req, res, next) => {});
 
 const resetPassword = catchAsync(async (req, res, next) => {});
+
 module.exports = {
     login,
     register,
