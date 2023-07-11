@@ -8,7 +8,7 @@ const envVarsSchema = Joi.object()
     .keys({
         NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
         PORT: Joi.number().default(3000),
-        MONGODB_URL: Joi.string().required().description('Mongo DB url')||'mongodb://127.0.0.1:27017/EVOCAB-Backend',
+        MONGODB_URL: Joi.string().required().description('Mongo DB url') || 'mongodb://127.0.0.1:27017/EVOCAB-Backend',
         JWT_SECRET_KEY: Joi.string().required().description('JWT secret key'),
         JWT_ACCESS_EXPIRES_IN: Joi.number().default(30).description('minutes after which access tokens expire'),
     })
