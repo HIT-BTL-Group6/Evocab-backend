@@ -1,6 +1,6 @@
 const express = require('express');
 const authMiddleware = require('../../middlewares/auth.middleware');
-const { login, register } = require('../../controllers/auth.controller');
+const { login, register, forgotPassword, resetPassword } = require('../../controllers/auth.controller');
 const { getUser } = require('../../controllers/user.controller');
 
 const authRouter = express.Router();
@@ -11,6 +11,10 @@ authRouter.route('/login').post(login);
 
 authRouter.use(authMiddleware);
 
-authRouter.route('/me').get(authMiddleware, getUser);
+authRouter.route('/me').get(getUser);
+
+authRouter.route('/fotgot-pasaword').post(forgotPassword);
+
+authRouter.route('/reset-password').post(resetPassword);
 
 module.exports = authRouter;

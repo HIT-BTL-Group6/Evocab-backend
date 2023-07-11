@@ -10,7 +10,12 @@ const envVarsSchema = Joi.object()
         PORT: Joi.number().default(3000),
         MONGODB_URL: Joi.string().required().description('Mongo DB url') || 'mongodb://127.0.0.1:27017/EVOCAB-Backend',
         JWT_SECRET_KEY: Joi.string().required().description('JWT secret key'),
-        JWT_ACCESS_EXPIRES_IN: Joi.string().default(30).description('minutes after which access tokens expire'),
+        JWT_ACCESS_EXPIRES_IN: Joi.number().default(30).description('minutes after which access tokens expire'),
+        SMTP_HOST: Joi.string().description('server that will send the emails'),
+        SMTP_PORT: Joi.number().description('port to connect to the email server'),
+        SMTP_USERNAME: Joi.string().description('username for email server'),
+        SMTP_PASSWORD: Joi.string().description('password for email server'),
+        EMAIL_FROM: Joi.string().description('the from field in the emails sent by the app'),
     })
     .unknown();
 
@@ -33,6 +38,18 @@ module.exports = {
     },
     jwt: {
         secret: envVars.JWT_SECRET_KEY || 'thuha-evocab',
-        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN || '1h',
+        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN || '30',
+    },
+    email: {
+        smtp: {
+            host: envVars.SMTP_HOST,
+            port: envVars.SMTP_PORT,
+            secure: true,
+            auth: {
+                user: envVars.SMTP_USERNAME,
+                pass: envVars.SMTP_PASSWORD,
+            },
+        },
+        from: envVars.EMAIL_FROM,
     },
 };
