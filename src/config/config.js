@@ -10,7 +10,7 @@ const envVarsSchema = Joi.object()
         PORT: Joi.number().default(3000),
         MONGODB_URL: Joi.string().required().description('Mongo DB url') || 'mongodb://127.0.0.1:27017/EVOCAB-Backend',
         JWT_SECRET_KEY: Joi.string().required().description('JWT secret key'),
-        JWT_ACCESS_EXPIRES_IN: Joi.number().default(30).description('minutes after which access tokens expire'),
+        JWT_ACCESS_EXPIRES_IN: Joi.string().default(30).description('minutes after which access tokens expire'),
     })
     .unknown();
 
@@ -21,8 +21,8 @@ if (error) {
 }
 
 module.exports = {
-    env: envVars.NODE_ENV,
-    port: envVars.PORT,
+    env: envVars.NODE_ENV || 'development',
+    port: envVars.PORT || 3000,
     mongoose: {
         url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
         options: {
@@ -32,7 +32,7 @@ module.exports = {
         },
     },
     jwt: {
-        secret: envVars.JWT_SECRET_KEY,
-        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN,
+        secret: envVars.JWT_SECRET_KEY || 'thuha-evocab',
+        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN || '1h',
     },
 };
