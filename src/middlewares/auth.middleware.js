@@ -6,14 +6,15 @@ const User = require('../models/user.model');
 
 const extractTokenFromHeader = (request) => {
     const authorizationHeader = request.headers.authorization;
-    const [type, token] = authorizationHeader ? authorizationHeader.split(' ') : [];
-    return type === 'Bearer' ? token : undefined;
+    const [type, accessToken] = authorizationHeader ? authorizationHeader.split(' ') : [];
+    return type === 'Bearer' ? accessToken : undefined;
 };
 
 const authMiddleware = catchAsync(async (req, res, next) => {
     const accessToken = extractTokenFromHeader(req);
-    console.log(accessToken);
-    if (!accessToken) throw new ApiError('Phiên bản hết hạn. Vui lòng đăng nhập lại!', httpStatus[401]);
+    if (!accessToken) {
+        throw new ApiError('Phiên bản hết hạn. Vui lòng đăng nhập lại!', httpStatus[401]);
+    }
 
     const payload = jwt.verify(accessToken, process.env.SECRET_KEY || 'thuha-evocab');
     if (!payload) throw new ApiError('Vui lòng xác thực!', httpStatus[401]);

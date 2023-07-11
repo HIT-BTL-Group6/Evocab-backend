@@ -13,7 +13,7 @@ authRouter.use(authMiddleware);
 
 authRouter.route('/me').get(getUser);
 
-authRouter.route('/fotgot-pasaword').post(forgotPassword);
+authRouter.route('/fotgot-password').post(forgotPassword);
 
 authRouter.route('/reset-password').post(resetPassword);
 
