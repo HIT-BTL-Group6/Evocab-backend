@@ -41,8 +41,9 @@ const wordSchema = new Schema(
             default: 'user',
         },
         topicId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Topic',
+            // type: Schema.Types.ObjectId,
+            // ref: 'Topic',
+            type:String,
             required: [true, 'Please provide the topic ID!'],
             trim: true,
         },
