@@ -1,14 +1,14 @@
 const express = require('express');
-// const wordRoute = require('./word.route');
+const wordRoute = require('./word.route');
 const userRoute = require('./user.route');
 
 const router = express.Router();
 
 const defaultRoutes = [
-    // {
-    //     path: '/words',
-    //     route: wordRoute,
-    // },
+    {
+        path: '/words',
+        route: wordRoute,
+    },
     {
         path: '/users',
         route: userRoute,
