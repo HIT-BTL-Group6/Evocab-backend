@@ -10,7 +10,7 @@ const envVarsSchema = Joi.object()
         PORT: Joi.number().default(3000),
         MONGODB_URL: Joi.string().required().description('Mongo DB url') || 'mongodb://127.0.0.1:27017/EVOCAB-Backend',
         JWT_SECRET_KEY: Joi.string().required().description('JWT secret key'),
-        JWT_ACCESS_EXPIRES_IN: Joi.number().default(30).description('minutes after which access tokens expire'),
+        JWT_ACCESS_EXPIRES_IN: Joi.string().default(30).description('minutes after which access tokens expire'),
         SMTP_HOST: Joi.string().description('server that will send the emails'),
         SMTP_PORT: Joi.number().description('port to connect to the email server'),
         SMTP_USERNAME: Joi.string().description('username for email server'),
