@@ -8,7 +8,7 @@ const userWordSchema = new mongoose.Schema(
             ref: 'User',
             required: [true, 'Please provide the userID!'],
         },
-        wordId: [{ type: Schema.Types.ObjectId, ref: 'Word', required: [true, 'Please provide the wordID!'] }],
+        words: [{ type: Schema.Types.ObjectId, ref: 'Word', required: [true, 'Please provide the wordID!'] }],
     },
     {
         timestamps: true,
