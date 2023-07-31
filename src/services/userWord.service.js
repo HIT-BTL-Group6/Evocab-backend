@@ -2,14 +2,15 @@ const httpStatus = require('http-status');
 const UserWord = require('../models/userWord.model');
 const ApiError = require('../utils/ApiError');
 
-const createUserWord = async (userWordId) => {
-    const newUserWord = await UserWord.findById(userWordId);
-    if (newUserWord) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'UserWord is required!');
+const createUserWord = async (userWordBody) => {
+    const existingUserWord = await UserWord.findOne({ userId: userWordBody.userId });
+    if (existingUserWord) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'UserWord already exists!');
     }
-    const userWord = await UserWord.create(newUserWord);
-    return userWord;
+    const newUserWord = await UserWord.create(userWordBody);
+    return newUserWord;
 };
+
 
 const getUserWords = async (filter, options) => {
     const userWords = await UserWord.paginate(filter, options);
@@ -34,33 +35,31 @@ const updateUserWordById = async (userWordId, updateBody) => {
     }
     return userWord;
 };
-const addWordFromUserWordById = async (userWordId, wordId) => {
-    const userWord = await UserWord.findById(userWordId);
-    if (!userWord) {
+const addWordToUserWordById = async (userWordId, wordsBody) => {
+    const rawUserWord = await UserWord.findById(userWordId);
+    if (!rawUserWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
-    const isExistInUserWord = UserWord[wordId].includes(userId);
-    if (isExistInUserWord) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Word is exist');
-    }
-    UserWord[wordId].push(userId);
-    const addWordToUserWord= await userWord.save();
-    return addWordToUserWord;
+    const uniqueUserWordIds = new Set(rawUserWord.words.map((word) => word.toString()));
+    wordsBody.words.forEach((wordId) => uniqueUserWordIds.add(wordId));
+    rawUserWord.words = Array.from(uniqueUserWordIds);
+    await rawUserWord.save();
+    return rawUserWord;
 };
 const deleteWordFromUserWordById = async (userWordId, wordId) => {
     const userWord = await UserWord.findById(userWordId);
     if (!userWord) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
+        throw new ApiError(httpStatus.NOT_FOUND, 'userWord not found');
     }
-    const isExistInUserWord = UserWord[wordId].includes(wordIdId);
-    if (!isExistInUserWord) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Word do not exist');
+    const isExistInWords = userWord.words.includes(wordId);
+    if (!isExistInWords) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Word does not exist in the UserWord');
     }
-    UserWord[wordId].remove(userId);
-    const deleteWordToUserWord = await userWord.save();
-    return deleteWordToUserWord;
+    userWord.words = userWord.words.filter((id) => id.toString() !== wordId);
+    const updatedUserWord = await userWord.save();
+    return updatedUserWord;                                                        
 };
-const deleteUserWordById = async (userWordId, updateBody) => {
+const deleteUserWordById = async (userWordId) => {
     const deletedUserWord = await UserWord.findByIdAndDelete(userWordId);
     if (!deletedUserWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User word not found');
@@ -75,5 +74,5 @@ module.exports = {
     updateUserWordById,
     deleteUserWordById,
     deleteWordFromUserWordById,
-    addWordFromUserWordById
+    addWordToUserWordById
 };

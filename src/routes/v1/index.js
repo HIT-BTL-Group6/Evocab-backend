@@ -3,6 +3,7 @@ const wordRoute = require('./word.route');
 const userRoute = require('./user.route');
 const authRoute = require('./auth.route');
 const userWordRoute = require('./userWord.route')
+const topicRoute = require('./topic.route')
 const router = express.Router();
 
 const defaultRoutes = [
@@ -21,6 +22,10 @@ const defaultRoutes = [
     {
         path: '/userWords',
         route: userWordRoute,
+    },
+    {
+        path: '/topics',
+        route: topicRoute,
     },
 ];
 
