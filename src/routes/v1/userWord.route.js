@@ -15,7 +15,7 @@ userWordRouter
     .put(validate(userWordValidation.updateUserWordById),userWordController.updateUserWordById)
     .delete(validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
 userWordRouter
-    .route('/:userWordId/word/:wordId')
+    .route('/:user-word/word/:wordId')
     .delete(validate(userWordValidation.deleteWordFromUserWordById),userWordController.deleteWordFromUserWordByIdController);
 userWordRouter
     .route('/:userWordId/word/')

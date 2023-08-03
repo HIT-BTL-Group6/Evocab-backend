@@ -31,7 +31,6 @@ const updateUserWordById = catchAsync(async (req, res) => {
 
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
     const { userWordId, wordId } = req.params;
-    console.log(req.params);
     await userWordService.deleteWordFromUserWordById(userWordId, wordId);
     res.status(httpStatus.OK).json({ message: 'Word deleted from UserWord successfully' });
 });

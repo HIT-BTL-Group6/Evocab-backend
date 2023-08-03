@@ -26,7 +26,6 @@ const getTopicById = catchAsync(async (req, res) => {
 const updateTopicById = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const topic = req.body;
-    console.log(req.body);
     const topicCreated = await topicService.updateTopicById(topicId, topic);
     res.status(httpStatus.OK).json(topicCreated);
 });
