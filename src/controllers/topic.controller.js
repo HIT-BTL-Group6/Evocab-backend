@@ -7,7 +7,10 @@ const mongoose = require('mongoose');
 const createTopic = catchAsync(async (req, res) => {
     const topicData = req.body;
     const topicCreated = await topicService.createTopic(topicData);
-    res.status(httpStatus.CREATED).json(topicCreated);
+    res.status(httpStatus.CREATED).json({
+        message: 'Create Topic successfully!',
+        data: topicCreated,
+    });
 });
 
 const getTopics = catchAsync(async (req, res) => {
@@ -27,7 +30,10 @@ const updateTopicById = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const topic = req.body;
     const topicCreated = await topicService.updateTopicById(topicId, topic);
-    res.status(httpStatus.OK).json(topicCreated);
+    res.status(httpStatus.OK).json({
+        message: 'Update Topic successfully!',
+        data: topicCreated,
+    });
 });
 
 const deleteWordFromTopicByIdController = catchAsync(async (req, res) => {

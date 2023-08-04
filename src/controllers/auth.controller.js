@@ -3,9 +3,9 @@ const catchAsync = require('../utils/catchAsync');
 const { authService, tokenService, userService, emailService } = require('../services/index');
 
 const register = catchAsync(async (req, res, next) => {
-    const userBpdy = req.body;
+    const userBody = req.body;
 
-    const user = await userService.createUser(userBpdy);
+    const user = await userService.createUser(userBody);
     res.status(httpStatus.CREATED).json({
         status: 'Đăng ký thành công!',
         user,

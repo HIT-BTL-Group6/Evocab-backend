@@ -37,8 +37,8 @@ module.exports = {
         },
     },
     jwt: {
-        secret: envVars.JWT_SECRET_KEY || 'thuha-evocab',
-        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN || '30',
+        secret: envVars.JWT_SECRET_KEY || 'evocabbackend',
+        accessExpiresIn: envVars.JWT_ACCESS_EXPIRES_IN || '1h',
     },
     email: {
         smtp: {

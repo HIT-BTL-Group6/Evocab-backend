@@ -6,7 +6,10 @@ const { userWordService } = require('../services');
 const createUserWord = catchAsync(async (req, res) => {
     const userWordData = req.body;
     const userWord = await userWordService.createUserWord(userWordData);
-    res.status(httpStatus.CREATED).json(userWord);
+    res.status(httpStatus.CREATED).json({
+        message: 'Created UserWord successfully!',
+        data: userWord,
+    });
 });
 
 const getUserWordsController = catchAsync(async (req, res) => {
@@ -19,14 +22,20 @@ const getUserWordsController = catchAsync(async (req, res) => {
 const getUserWordById = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const userWord = await userWordService.getUserWordById(userWordId);
-    res.status(httpStatus.OK).json(userWord);
+    res.status(httpStatus.OK).json({
+        message: 'Get UserWord By Id successfully!',
+        data: userWord,
+    });
 });
 
 const updateUserWordById = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const updateBody = req.body;
     const userWord = await userWordService.updateUserWordById(userWordId, updateBody);
-    res.status(httpStatus.OK).json(userWord);
+    res.status(httpStatus.OK).json({
+        message: 'Update UserWord successfully!',
+        data: userWord,
+    });
 });
 
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
