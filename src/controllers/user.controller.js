@@ -15,7 +15,7 @@ const getUsers = catchAsync(async (req, res, next) => {
 });
 
 const getUser = catchAsync(async (req, res, next) => {
-    const userId = req.params.userId || req.body.id;
+    const userId = req.params.userId || req.user.id;
     const user = await userService.getUserById(userId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,

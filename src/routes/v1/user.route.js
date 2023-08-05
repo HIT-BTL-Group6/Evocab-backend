@@ -7,7 +7,7 @@ const authMiddleware = require('../../middlewares/auth.middleware');
 
 const userRouter = express.Router();
 
-// userRouter.use(authMiddleware);
+userRouter.use(authMiddleware);
 
 userRouter
     .route('/')
