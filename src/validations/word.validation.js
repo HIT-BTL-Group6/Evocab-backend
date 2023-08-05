@@ -8,8 +8,8 @@ const wordValidation = {
         pronunciation: Joi.string().required(),
         image: Joi.string(),
         vietnamese: Joi.string().required(),
-        wordType: Joi.string().required(),
-        topicId: Joi.string().custom(objectId).required(),
+        nameTopic: Joi.string().required(),
+        // topicId: Joi.string().custom(objectId).required(),
     }),
 
     getWords: Joi.object().keys({
@@ -32,8 +32,8 @@ const wordValidation = {
                 pronunciation: Joi.string(),
                 image: Joi.string(),
                 vietnamese: Joi.string(),
-                wordType: Joi.string(),
-                topicId: Joi.string().custom(objectId).required(),
+                nameTopic: Joi.string(),
+                // topicId: Joi.string().custom(objectId).required(),
             })
             .min(1),
     }),

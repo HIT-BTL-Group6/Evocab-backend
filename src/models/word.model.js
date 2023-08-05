@@ -30,22 +30,22 @@ const wordSchema = new Schema(
             required: [true, 'Please provide the Vietnamese translation!'],
             trim: true,
         },
-        wordType: {
-            type: String,
-            required: [true, 'Please provide the word type!'],
+        // role: {
+        //     type: String,
+        //     enum: ['user', 'admin'],
+        //     default: 'user',
+        // },
+        // topicId: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'Topic',
+        //     required: [true, 'Please provide the topic ID!'],
+        //     trim: true,
+        // },
+        nameTopic:{
+            type:String,
+            required: [true, 'Please provide the name Topic!'],
             trim: true,
-        },
-        role: {
-            type: String,
-            enum: ['user', 'admin'],
-            default: 'user',
-        },
-        topicId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Topic',
-            required: [true, 'Please provide the topic ID!'],
-            trim: true,
-        },
+        }
     },
     {
         timestamps: true,
