@@ -20,7 +20,10 @@ const getWords = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['wordType']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const words = await wordService.getWords(filter, options);
-    res.status(httpStatus.OK).json(words);
+    res.status(httpStatus.OK).json({
+        message: 'Get Words successfully!',
+        data: words,
+    });
 });
 
 const getWord = catchAsync(async (req, res) => {
@@ -35,7 +38,6 @@ const getWord = catchAsync(async (req, res) => {
 const updateWord = catchAsync(async (req, res) => {
     const {wordId} = req.params;
     const wordUpdate = req.body;
-    console.log(wordId);
     const word = await wordService.updateWordById(wordId,wordUpdate);
     res.status(httpStatus.OK).json({
         message: 'Update Word successfully!',
@@ -46,7 +48,10 @@ const updateWord = catchAsync(async (req, res) => {
 const deleteWord = catchAsync(async (req, res) => {
     const wordId = req.params.wordId;
     const word = await wordService.deleteWordById(wordId);
-    res.status(httpStatus.OK).json({ message: 'Deleted Word successfully!', data: word });
+    res.status(httpStatus.OK).json({ 
+        message: 'Deleted Word successfully!',
+        data: word 
+    });
 });
 
 module.exports = {
