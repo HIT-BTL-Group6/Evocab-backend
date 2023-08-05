@@ -13,12 +13,29 @@ const createUserWord = catchAsync(async (req, res) => {
 });
 
 const getUserWordsController = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['userWordId', 'userId']);
+    const filter = pick(req.query, ['userWordId']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const userWords = await userWordService.getUserWords(filter, options);
-    res.status(httpStatus.OK).json(userWords);
+    console.log(filter);
+    res.status(httpStatus.OK).json({
+        message: 'get UserWord successfully!',
+        data: userWords,
+    });
 });
-
+const getRememberUserWords = catchAsync(async (req, res) => {
+    const userWords = await userWordService.getRememberUserWordsIds();
+    res.status(httpStatus.OK).json({
+        message: 'get wordId is True successfully!',
+        data: userWords,
+    });
+});
+const getNotRememberUserWords = catchAsync(async (req, res) => {
+    const userWords = await userWordService.getNotRememberUserWordsIds();
+    res.status(httpStatus.OK).json({
+        message: 'get wordId is False  successfully!',
+        data: userWords,
+    });
+});
 const getUserWordById = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const userWord = await userWordService.getUserWordById(userWordId);
@@ -59,8 +76,10 @@ module.exports = {
     createUserWord,
     getUserWordsController,
     getUserWordById,
+    getNotRememberUserWords,
     updateUserWordById,
     deleteWordFromUserWordByIdController,
     addWordToUserWordByIdController,
-    deleteUserWordById
+    deleteUserWordById,
+    getRememberUserWords
 };

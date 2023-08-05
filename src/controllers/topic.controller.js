@@ -14,12 +14,11 @@ const createTopic = catchAsync(async (req, res) => {
 });
 
 const getTopics = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['words']);
+    const filter = pick(req.query, ['nameTopic']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const topics = await topicService.getTopics(filter, options);
     res.status(httpStatus.OK).json(topics);
 });
-
 const getTopicById = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const topic = await topicService.getTopicById(topicId);

@@ -20,7 +20,10 @@ const getWords = catchAsync(async (req, res) => {
     const filter = pick(req.query, ['wordType']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const words = await wordService.getWords(filter, options);
-    res.status(httpStatus.OK).json(words);
+    res.status(httpStatus.OK).json({
+        message: 'Get Words successfully!',
+        data: words,
+    });
 });
 
 const getWord = catchAsync(async (req, res) => {

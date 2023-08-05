@@ -9,14 +9,27 @@ const userWordRouter = express.Router();
 userWordRouter.use(authMiddleware);
 userWordRouter
     .route('/')
-    .post(authMiddleware, roles('admin'), validate(userWordValidation.createUserWord), userWordController.createUserWord)
+    .post(authMiddleware, roles('admin'), userWordController.createUserWord)
     .get(
         authMiddleware,
         roles('admin'),
         validate(userWordValidation.getUserWords),
         userWordController.getUserWordsController
     );
-
+userWordRouter
+    .route('/remember')
+    .get(
+        authMiddleware,
+        roles('admin'),
+        userWordController.getRememberUserWords
+    );
+userWordRouter
+    .route('/not-remember')
+    .get(
+        authMiddleware,
+        roles('admin'),
+        userWordController.getNotRememberUserWords
+    );
 userWordRouter
     .route('/:userWordId')
     .get(authMiddleware, roles('admin'), validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
