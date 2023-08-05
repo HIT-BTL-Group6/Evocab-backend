@@ -40,7 +40,7 @@ const defaultRoutes = [
         route: examRoute,
     },
     {
-        path: '/examsOfUsers',
+        path: '/exams-of-users',
         route: examOfUserRoute,
     },
 ];
