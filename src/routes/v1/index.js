@@ -20,7 +20,7 @@ const defaultRoutes = [
         route: authRoute,
     },
     {
-        path: '/userWords',
+        path: '/user-words',
         route: userWordRoute,
     },
     {
