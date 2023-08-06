@@ -5,15 +5,14 @@ const wordValidation = {
     createWord: Joi.object().keys({
         word: Joi.string().required(),
         example: Joi.string().required(),
+        sound: Joi.string().required(),
         pronunciation: Joi.string().required(),
-        image: Joi.string(),
+        image: Joi.string().required(),
         vietnamese: Joi.string().required(),
-        wordType: Joi.string().required(),
-        topicId: Joi.string().custom(objectId).required(),
+        nameTopic: Joi.string().required(),
     }),
 
     getWords: Joi.object().keys({
-        wordType: Joi.string(),
         sortBy: Joi.string(),
         limit: Joi.number().integer(),
         page: Joi.number().integer(),
@@ -29,11 +28,11 @@ const wordValidation = {
             .keys({
                 word: Joi.string(),
                 example: Joi.string(),
+                sound: Joi.string(),
                 pronunciation: Joi.string(),
                 image: Joi.string(),
                 vietnamese: Joi.string(),
-                wordType: Joi.string(),
-                topicId: Joi.string().custom(objectId).required(),
+                nameTopic: Joi.string().required()
             })
             .min(1),
     }),
