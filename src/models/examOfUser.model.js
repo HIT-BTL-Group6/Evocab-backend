@@ -15,7 +15,7 @@ const examOfUserSchema = new Schema(
             ref: 'User',
             required: true,
         },
-        resutl: {
+        result: {
             type: Number,
             default: 0,
         },

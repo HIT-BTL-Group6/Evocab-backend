@@ -7,7 +7,7 @@ const examOfUserRouter = express.Router();
 
 examOfUserRouter.use(authMiddleware);
 
-examOfUserRouter.route('/').get(examOfUserController.getExamsOfUser);
+examOfUserRouter.route('/').get(examOfUserController.getExamsOfUser).post(examOfUserController.createExam);
 
 examOfUserRouter
     .route('/:examId')
@@ -15,9 +15,8 @@ examOfUserRouter
     .put(examOfUserController.updateExamOfUser)
     .delete(examOfUserController.deleteExamOfUser);
 
-examOfUserRouter
-    .route('/update-exam-time/:examId')
-    .put(examOfUserController.updateStartExamTime)
-    .put(examOfUserController.updateEndExamTimeResult);
+examOfUserRouter.route('/update-start-exam/:examId').put(examOfUserController.updateStartExamTime);
+
+examOfUserRouter.route('/update-end-exam/:examId').put(examOfUserController.updateEndExamTimeResult);
 
 module.exports = examOfUserRouter;
