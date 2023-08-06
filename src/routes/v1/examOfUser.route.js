@@ -15,4 +15,9 @@ examOfUserRouter
     .put(examOfUserController.updateExamOfUser)
     .delete(examOfUserController.deleteExamOfUser);
 
+examOfUserRouter
+    .route('/update-exam-time/:examId')
+    .put(examOfUserController.updateStartExamTime)
+    .put(examOfUserController.updateEndExamTimeResult);
+
 module.exports = examOfUserRouter;

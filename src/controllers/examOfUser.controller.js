@@ -17,6 +17,41 @@ const getExamsOfUser = catchAsync(async (req, res, next) => {
     });
 });
 
+const createExam = catchAsync(async (req, res) => {
+    const examData = req.body;
+    const newExam = await ExamOfUser.create(examData);
+
+    res.status(httpStatus.CREATED).json({
+        code: httpStatus.CREATED,
+        message: 'Create exam successfully!',
+        data: newExam,
+    });
+});
+
+const updateStartExamTime = catchAsync(async (req, res, next) => {
+    const { startExamTime } = req.body;
+    const { examId } = req.params;
+    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { startExamTime });
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Update start exam time successfully!',
+        data: updatedExam,
+    });
+});
+
+const updateEndExamTimeResult = catchAsync(async (req, res, next) => {
+    const { endExamTime } = req.body;
+    const { examId } = req.params;
+    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { endExamTime });
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Update end exam time successfully!',
+        data: updatedExam,
+    });
+});
+
 const getExamOfUser = catchAsync(async (req, res, next) => {
     const examId = req.params.examId || req.exam.id;
 
@@ -56,6 +91,8 @@ const deleteExamOfUser = catchAsync(async (req, res, next) => {
 module.exports = {
     getExamOfUser,
     getExamsOfUser,
+    updateStartExamTime,
+    updateEndExamTimeResult,
     updateExamOfUser,
     deleteExamOfUser,
 };

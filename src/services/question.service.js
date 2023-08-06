@@ -14,11 +14,11 @@ const getQuestionById = async (questionId) => {
 };
 
 const createQuestion = async (questionBody) => {
-    const { topic } = questionBody;
+    const { topic: topicId } = questionBody;
 
-    if (!topic) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
+    if (!topicId) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
 
-    const topicInfo = await Topic.findOne({ nameTopic: topic });
+    const topicInfo = await Topic.findOne({ _id: topicId });
     if (!topicInfo) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Topic này không tồn tại!');
     }

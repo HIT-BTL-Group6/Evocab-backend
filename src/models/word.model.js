@@ -22,7 +22,7 @@ const wordSchema = new Schema(
         },
         image: {
             type: String,
-            required: [true, 'Please provide an image!'],
+            // required: [true, 'Please provide an image!'],
             trim: true,
         },
         vietnamese: {

@@ -19,8 +19,12 @@ const examOfUserSchema = new Schema(
             type: Number,
             default: 0,
         },
-        time: {
-            type: String,
+        startExamTime: {
+            type: Date,
+            default: null,
+        },
+        endExamTime: {
+            type: Date,
             default: null,
         },
     },
