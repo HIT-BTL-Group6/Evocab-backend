@@ -12,13 +12,17 @@ userWordRouter
     .post(authMiddleware, roles('admin'), validate(userWordValidation.createUserWord), userWordController.createUserWord)
     .get(
         authMiddleware,
-        roles('admin'),
         validate(userWordValidation.getUserWords),
         userWordController.getUserWordsController
     );
-
 userWordRouter
-    .route('/:userWordId')
+    .route('/not-remember/:userWordId')
+    .get(authMiddleware,userWordController.getNotRememberUserWords)
+userWordRouter
+    .route('/remember/:userWordId')
+    .get(authMiddleware,userWordController.getRememberUserWords)
+userWordRouter
+    .route('/:userWordId/')
     .get(authMiddleware, roles('admin'), validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
     .put(
         authMiddleware,
@@ -28,7 +32,6 @@ userWordRouter
     )
     .delete(
         authMiddleware,
-        roles('admin'),
         validate(userWordValidation.deleteUserWordById),
         userWordController.deleteUserWordById
     );
@@ -36,7 +39,6 @@ userWordRouter
     .route('/:user-word/word/:wordId')
     .delete(
         authMiddleware,
-        roles('admin'),
         validate(userWordValidation.deleteWordFromUserWordById),
         userWordController.deleteWordFromUserWordByIdController
     );
@@ -44,7 +46,6 @@ userWordRouter
     .route('/:userWordId/word/')
     .post(
         authMiddleware,
-        roles('admin'),
         validate(userWordValidation.addWordToUserWordById),
         userWordController.addWordToUserWordByIdController
     );

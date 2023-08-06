@@ -8,11 +8,11 @@ const topicController = require('../../controllers/topic.controller');
 const topicRouter = express.Router();
 topicRouter
     .route('/')
-    .post(authMiddleware,roles('admin'),validate(topicValidation.createTopic), topicController.createTopic)
+    .post(authMiddleware,validate(topicValidation.createTopic), topicController.createTopic)
     .get(validate(topicValidation.getTopics), topicController.getTopics);
 topicRouter
     .route('/:topicId')
-    .get(validate(topicValidation.getTopicById), topicController.getTopicById)
+    .get(authMiddleware,validate(topicValidation.getTopicById), topicController.getTopicById)
     .put(authMiddleware,roles('admin'), validate(topicValidation.updateTopicById), topicController.updateTopicById)
     .delete(authMiddleware,roles('admin'),validate(topicValidation.deleteTopicById), topicController.deleteTopicById);
 topicRouter
