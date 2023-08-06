@@ -14,6 +14,7 @@ const createTopic = catchAsync(async (req, res) => {
 });
 
 const getTopics = catchAsync(async (req, res) => {
+
     const filter = pick(req.query, ['nameTopic']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const topics = await topicService.getTopics(filter, options);
@@ -26,10 +27,12 @@ const getTopics = catchAsync(async (req, res) => {
 const getTopicById = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const topic = await topicService.getTopicById(topicId);
+
     res.status(httpStatus.OK).json({
         message: 'get Topic By Id successfully!',
         data: topic,
     });
+
 });
 
 const updateTopicById = catchAsync(async (req, res) => {
@@ -54,11 +57,13 @@ const deleteWordFromTopicByIdController = catchAsync(async (req, res) => {
 const addWordToTopicByIdController = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const words = req.body.words;
+
     const topics = await topicService.addWordToTopicById(topicId, { words });
     res.status(httpStatus.OK).json({
         message: 'Word added to Topic successfully', 
         data: topics 
     });
+
 });
 
 const deleteTopicById = catchAsync(async (req, res) => {
@@ -78,3 +83,4 @@ module.exports = {
     addWordToTopicByIdController,
     deleteTopicById,
 };
+
