@@ -19,18 +19,14 @@ const getUserWords = async (filter, options) => {
     }
     return userWords;
 };
-const getRememberUserWordsIds = async () => {
+const getRememberUserWordsIds = async (userWordId) => {
     try {
-        const userWords = await UserWord.find({});
-        if (!userWords || userWords.length === 0) {
-            throw new ApiError(httpStatus.NOT_FOUND, 'No UserWords found');
+        const userWord = await UserWord.findById(userWordId);
+        if (!userWord) {
+            throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
         }
 
-        const rememberedWords = userWords.reduce((acc, userWord) => {
-            const rememberedObjects = userWord.words.filter(word => word.isRemember === 'true');
-            return [...acc, ...rememberedObjects];
-        }, []);
-
+        const rememberedWords = userWord.words.filter(word => word.isRemember === 'true');
         const wordIds = rememberedWords.map(word => word.wordId.toString());
         return wordIds;
     } catch (error) {
@@ -38,24 +34,21 @@ const getRememberUserWordsIds = async () => {
     }
 };
 
-const getNotRememberUserWordsIds = async () => {
+const getNotRememberUserWordsIds = async (userWordId) => {
     try {
-        const userWords = await UserWord.find({});
-        if (!userWords || userWords.length === 0) {
-            throw new ApiError(httpStatus.NOT_FOUND, 'No UserWords found');
+        const userWord = await UserWord.findById(userWordId);
+        if (!userWord) {
+            throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
         }
 
-        const notRememberedWords = userWords.reduce((acc, userWord) => {
-            const notRememberedObjects = userWord.words.filter(word => word.isRemember === 'false');
-            return [...acc, ...notRememberedObjects];
-        }, []);
-
+        const notRememberedWords = userWord.words.filter(word => word.isRemember === 'false');
         const wordIds = notRememberedWords.map(word => word.wordId.toString());
         return wordIds;
     } catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
     }
 };
+
 const getUserWordById = async (userWordId) => {
     const userWord = await UserWord.findById(userWordId);
     if (!userWord) {

@@ -8,12 +8,10 @@ const createWord = catchAsync(async (req, res) => {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Both image and sound files are required');
     }
 
-    const imageFile = req.files.image[0]; // multer adds an array to req.files for each field
+    const imageFile = req.files.image[0]; 
     const soundFile = req.files.sound[0];
-
-    const imagePath = imageFile.path;
-    const soundPath = soundFile.path;
-
+    const imagePath = imageFile.path.replace(/\\/g, '/');
+    const soundPath = soundFile.path.replace(/\\/g, '/'); 
     const wordData = {
         ...req.body,
         image: imagePath,

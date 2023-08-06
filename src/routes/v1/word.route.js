@@ -11,7 +11,6 @@ wordRouter
     .route('/')
     .post(
         authMiddleware,
-        roles('admin'),
         upload.fields([{ name: 'image' }, { name: 'sound' }]),
         validate(wordValidation.createWord),
         wordController.createWord
