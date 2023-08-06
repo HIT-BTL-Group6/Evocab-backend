@@ -4,11 +4,22 @@ const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { wordService } = require('../services');
 const createWord = catchAsync(async (req, res) => {
-    const { path } = req.file;
+    if (!req.files || Object.keys(req.files).length !== 2 || !req.files.image || !req.files.sound) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Both image and sound files are required');
+    }
+
+    const imageFile = req.files.image[0]; // multer adds an array to req.files for each field
+    const soundFile = req.files.sound[0];
+
+    const imagePath = imageFile.path;
+    const soundPath = soundFile.path;
+
     const wordData = {
         ...req.body,
-        image: path,
+        image: imagePath,
+        sound: soundPath,
     };
+
     const word = await wordService.createWord(wordData);
     res.status(httpStatus.CREATED).json({
         message: 'Created Word successfully!',
@@ -17,13 +28,14 @@ const createWord = catchAsync(async (req, res) => {
 });
 
 const getWords = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['wordType']);
+    const filter = pick(req.query, ['wordId']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const words = await wordService.getWords(filter, options);
     res.status(httpStatus.OK).json({
-        message: 'Get Words successfully!',
-        data: words,
-    });
+            message: 'Get Words successfully!',
+            data:words
+        }
+    );
 });
 
 const getWord = catchAsync(async (req, res) => {
@@ -36,9 +48,9 @@ const getWord = catchAsync(async (req, res) => {
 });
 
 const updateWord = catchAsync(async (req, res) => {
-    const {wordId} = req.params;
+    const { wordId } = req.params;
     const wordUpdate = req.body;
-    const word = await wordService.updateWordById(wordId,wordUpdate);
+    const word = await wordService.updateWordById(wordId, wordUpdate);
     res.status(httpStatus.OK).json({
         message: 'Update Word successfully!',
         data: word,
@@ -48,9 +60,9 @@ const updateWord = catchAsync(async (req, res) => {
 const deleteWord = catchAsync(async (req, res) => {
     const wordId = req.params.wordId;
     const word = await wordService.deleteWordById(wordId);
-    res.status(httpStatus.OK).json({ 
+    res.status(httpStatus.OK).json({
         message: 'Deleted Word successfully!',
-        data: word 
+        data: word,
     });
 });
 

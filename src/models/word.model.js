@@ -15,6 +15,11 @@ const wordSchema = new Schema(
             required: [true, 'Please provide an example!'],
             trim: true,
         },
+        sound: {
+            type: String,
+            required: [true, 'Please provide the sound!'],
+            trim: true,
+        },
         pronunciation: {
             type: String,
             required: [true, 'Please provide the pronunciation!'],
@@ -30,20 +35,9 @@ const wordSchema = new Schema(
             required: [true, 'Please provide the Vietnamese translation!'],
             trim: true,
         },
-        wordType: {
+        nameTopic: {
             type: String,
-            required: [true, 'Please provide the word type!'],
-            trim: true,
-        },
-        role: {
-            type: String,
-            enum: ['user', 'admin'],
-            default: 'user',
-        },
-        topicId: {
-            type: Schema.Types.ObjectId,
-            ref: 'Topic',
-            required: [true, 'Please provide the topic ID!'],
+            required: [true, 'Please provide the name Topic!'],
             trim: true,
         },
     },
