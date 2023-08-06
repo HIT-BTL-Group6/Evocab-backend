@@ -11,6 +11,7 @@ const createUserWord = async (userWordBody) => {
     return newUserWord;
 };
 
+
 const getUserWords = async (filter, options) => {
     const userWords = await UserWord.paginate(filter, options);
     if (!userWords) {
@@ -113,3 +114,4 @@ module.exports = {
     deleteWordFromUserWordById,
     addWordToUserWordById
 };
+

@@ -7,3 +7,7 @@ yarn-error.log
 # Environment varibales
 .env*
 !.env*.template
+
+explaination.txt
+
+uploads/

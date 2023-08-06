@@ -21,6 +21,7 @@ const userWordSchema = new mongoose.Schema(
                 },
             },
         ],
+
     },
     {
         timestamps: true,
