@@ -9,3 +9,5 @@ yarn-error.log
 !.env*.template
 
 explaination.txt
+
+uploads/
