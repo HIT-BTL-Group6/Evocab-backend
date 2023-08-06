@@ -6,10 +6,12 @@ const Question = require('../models/question.model');
 const { questionService } = require('../services');
 
 const getQuestions = catchAsync(async (req, res, next) => {
-    // const filter = pick(req.query, ['question']);
-    // const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    // const questions = await Question.paginate(filter, options);
-    const questions = await Question.find().populate({
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+
+    const page = parseInt(options.page) || 1;
+    const limit = parseInt(options.limit) || 10;
+    const skip = (page - 1) * limit;
+    const questions = await Question.find().limit(limit).skip(skip).populate({
         path: 'topic',
         select: 'nameTopic',
     });

@@ -10,22 +10,12 @@ const getExamOfUserById = async (examId) => {
 };
 
 const updateExamOfUserById = async (examId, examBody) => {
-    // const { examName } = examBody;
-
-    // if (!examName) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
-
-    // const topicInfo = await Topic.findOne({ nameTopic: topic });
-    // if (!topicInfo) {
-    //     throw new ApiError(httpStatus.NOT_FOUND, 'Topic này không tồn tại!');
-    // }
-
     const updatedExam = ExamOfUser.findByIdAndUpdate(examId, examBody, { new: true });
 
     if (!updatedExam) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy  đề thi này!');
     }
     return updatedExam;
-    Đề;
 };
 
 const deleteExamOfUserById = async (examId) => {

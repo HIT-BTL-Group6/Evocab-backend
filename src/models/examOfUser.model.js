@@ -15,12 +15,16 @@ const examOfUserSchema = new Schema(
             ref: 'User',
             required: true,
         },
-        resutl: {
+        result: {
             type: Number,
             default: 0,
         },
-        time: {
-            type: String,
+        startExamTime: {
+            type: Date,
+            default: null,
+        },
+        endExamTime: {
+            type: Date,
             default: null,
         },
     },
