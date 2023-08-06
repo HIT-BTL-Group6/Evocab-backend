@@ -30,7 +30,8 @@ const questionSchema = new Schema(
         },
         answer: {
             word_correct: {
-                type: String,
+                type: Schema.Types.ObjectId,
+                ref: 'Word',
                 required: [true, 'Please provide the word_correct!'],
             },
             choices: [

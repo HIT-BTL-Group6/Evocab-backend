@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const Question = require('../models/question.model');
 const Topic = require('../models/topic.model');
+const Word = require('../models/word.model');
 
 const getQuestionById = async (questionId) => {
     const question = await Question.findById(questionId).populate({
@@ -15,6 +16,9 @@ const getQuestionById = async (questionId) => {
 
 const createQuestion = async (questionBody) => {
     const { topic: topicId } = questionBody;
+    const wordCorrectId = questionBody.answer?.word_correct;
+    const existWord = Word.findById(wordCorrectId);
+    if (!existWord) throw new ApiError(httpStatus.NOT_FOUND, 'Từ này không tồn tại!');
 
     if (!topicId) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
 
