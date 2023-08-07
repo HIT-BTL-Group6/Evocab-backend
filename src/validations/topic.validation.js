@@ -10,6 +10,7 @@ const createTopic = {
 
 const getTopics = {
     query: Joi.object().keys({
+        nameTopic:Joi.string(),
         sortBy: Joi.string(),
         limit: Joi.number().integer(),
         page: Joi.number().integer(),

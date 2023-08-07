@@ -26,15 +26,15 @@ const createWord = catchAsync(async (req, res) => {
 });
 
 const getWords = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['wordId']);
+    const nameTopic = req.query.nameTopic;
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    const words = await wordService.getWords(filter, options);
+    const words = await wordService.getWords(nameTopic, options);
     res.status(httpStatus.OK).json({
-            message: 'Get Words successfully!',
-            data:words
-        }
-    );
+        message: 'Get Words successfully!',
+        data: words,
+    });
 });
+
 
 const getWord = catchAsync(async (req, res) => {
     const wordId = req.params.wordId || req.body.id;
@@ -69,5 +69,5 @@ module.exports = {
     getWords,
     getWord,
     updateWord,
-    deleteWord,
+    deleteWord
 };
