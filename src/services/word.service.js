@@ -10,13 +10,6 @@ const createWord = async (wordBody) => {
     const word = await Word.create(wordBody);
     return word;
 };
-const getWords = async (filter, options) => {
-    const words = await Word.paginate(filter, options);
-    if (!words) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Word not found');
-    }
-    return words;
-};
 const getWordById = async (id) => {
     const word = await Word.findById(id);
     if (!word) {
@@ -38,6 +31,18 @@ const deleteWordById = async (wordId) => {
     }
     return deletedWord;
 };
+const getWords = async (nameTopic, options) => {
+    const filter = {};
+    if (nameTopic) {
+        filter.nameTopic = nameTopic;
+    }
+    const words = await Word.paginate(filter, options);
+    if (!words) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Word not found');
+    }
+    return words;
+};
+
 
 module.exports = {
     createWord,
