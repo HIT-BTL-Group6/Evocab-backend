@@ -6,9 +6,12 @@ const Exam = require('../models/exam.model');
 const { examService } = require('../services');
 
 const getExams = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['question']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    const exams = await Exam.paginate(filter, options);
+
+    const page = parseInt(options.page) || 1;
+    const limit = parseInt(options.limit) || 10;
+    const skip = (page - 1) * limit;
+    const exams = await Exam.find().limit(limit).skip(skip).populate('questions');
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -18,17 +21,14 @@ const getExams = catchAsync(async (req, res) => {
 });
 
 const getExam = catchAsync(async (req, res) => {
-    const examId = req.params.examId || req.exam.id;
+    const examId = req.params.examId;
 
     const exam = await examService.getExamById(examId);
-    const startTime = new Date();
-    console.log(startTime);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Get exam successfully!',
         data: exam,
-        startTime: startTime,
     });
 });
 

@@ -23,17 +23,19 @@ const getUserWordsController = catchAsync(async (req, res) => {
     });
 });
 const getRememberUserWords = catchAsync(async (req, res) => {
-    const userWords = await userWordService.getRememberUserWordsIds();
+    const { userWordId } = req.params; 
+    const userWords = await userWordService.getRememberUserWordsIds(userWordId);
     res.status(httpStatus.OK).json({
         message: 'get wordId is True successfully!',
-        data: userWords,
+        words: userWords,
     });
 });
 const getNotRememberUserWords = catchAsync(async (req, res) => {
-    const userWords = await userWordService.getNotRememberUserWordsIds();
+    const { userWordId } = req.params;
+    const userWords = await userWordService.getNotRememberUserWordsIds(userWordId);
     res.status(httpStatus.OK).json({
-        message: 'get wordId is False  successfully!',
-        data: userWords,
+        message: 'get wordId is False successfully!',
+        words: userWords,
     });
 });
 const getUserWordById = catchAsync(async (req, res) => {

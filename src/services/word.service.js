@@ -1,12 +1,14 @@
 const httpStatus = require('http-status');
 const Word = require('../models/word.model');
 const ApiError = require('../utils/ApiError');
+
 const createWord = async (wordBody) => {
-    const word = await Word.findOne({ word: wordBody.word });
-    if (word) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Word is required!');
+    const existingWord = await Word.findOne({ word: wordBody.word });
+    if (existingWord) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Word already exists');
     }
-    return Word.create(wordBody);
+    const word = await Word.create(wordBody);
+    return word;
 };
 const getWords = async (filter, options) => {
     const words = await Word.paginate(filter, options);

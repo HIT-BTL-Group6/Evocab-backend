@@ -9,13 +9,33 @@ const wordRouter = express.Router();
 
 wordRouter
     .route('/')
-    .post(authMiddleware,roles('admin'),upload.single('image'), validate(wordValidation.createWord), wordController.createWord)
-    .get(validate(wordValidation.getWords), wordController.getWords);
+    .post(
+        authMiddleware,
+        upload.fields([{ name: 'image' }, { name: 'sound' }]),
+        validate(wordValidation.createWord),
+        wordController.createWord
+    )
+    .get(
+        validate(wordValidation.getWords),
+        wordController.getWords
+    );
 
 wordRouter
     .route('/:wordId')
-    .get(validate(wordValidation.getWord), wordController.getWord)
-    .put(authMiddleware,roles('admin'),wordController.updateWord)
-    .delete(authMiddleware,roles('admin'),validate(wordValidation.deleteWord), wordController.deleteWord);
+    .get(
+        validate(wordValidation.getWord),
+        wordController.getWord
+    )
+    .put(
+        authMiddleware,
+        roles('admin'),
+        wordController.updateWord
+    )
+    .delete(
+        authMiddleware,
+        roles('admin'),
+        validate(wordValidation.deleteWord),
+        wordController.deleteWord
+    );
 
 module.exports = wordRouter;
