@@ -23,7 +23,7 @@ const getUserWordsController = catchAsync(async (req, res) => {
     });
 });
 const getRememberUserWords = catchAsync(async (req, res) => {
-    const { userWordId } = req.params; 
+    const { userWordId } = req.params;
     const userWords = await userWordService.getRememberUserWordsIds(userWordId);
     res.status(httpStatus.OK).json({
         message: 'get wordId is True successfully!',
@@ -60,9 +60,9 @@ const updateUserWordById = catchAsync(async (req, res) => {
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
     const { userWordId, wordId } = req.params;
     const wordDeleted = await userWordService.deleteWordFromUserWordById(userWordId, wordId);
-    res.status(httpStatus.OK).json({ 
-        message: 'Word deleted from UserWord successfully', 
-        data: wordDeleted
+    res.status(httpStatus.OK).json({
+        message: 'Word deleted from UserWord successfully',
+        data: wordDeleted,
     });
 });
 
@@ -70,19 +70,45 @@ const addWordToUserWordByIdController = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const words = req.body.words;
     const userWords = await userWordService.addWordToUserWordById(userWordId, { words });
-    res.status(httpStatus.OK).json({ 
-        message: 'Word added to UserWord successfully', 
-        data: userWords 
+    res.status(httpStatus.OK).json({
+        message: 'Word added to UserWord successfully',
+        data: userWords,
     });
 });
 const deleteUserWordById = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const userWordDeleted = await userWordService.deleteUserWordById(userWordId);
-    res.status(httpStatus.OK).json({ 
+    res.status(httpStatus.OK).json({
         message: 'UserWord deleted successfully',
-        data:userWordDeleted 
+        data: userWordDeleted,
     });
 });
+
+const getReviewQuestion = catchAsync(async (req, res) => {
+    const { userWordId } = req.params;
+
+    const reviewQuestions = await userWordService.getReviewQuestion(userWordId);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Get review questions successfully!',
+        data: reviewQuestions,
+    });
+});
+
+const updateRememberWord = catchAsync(async (req, res) => {
+    const [{ isRemember, wordId }] = req.body.words;
+    const { userWordId } = req.params;
+
+    const updatedUserWord = await userWordService.updateRememberWord(userWordId, { isRemember }, wordId);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'IsRemember updated successfully',
+        data: updatedUserWord,
+    });
+});
+
 module.exports = {
     createUserWord,
     getUserWordsController,
@@ -93,4 +119,6 @@ module.exports = {
     addWordToUserWordByIdController,
     deleteUserWordById,
     getRememberUserWords,
+    updateRememberWord,
+    getReviewQuestion,
 };

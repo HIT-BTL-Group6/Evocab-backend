@@ -10,17 +10,9 @@ userWordRouter.use(authMiddleware);
 userWordRouter
     .route('/')
     .post(authMiddleware, roles('admin'), validate(userWordValidation.createUserWord), userWordController.createUserWord)
-    .get(
-        authMiddleware,
-        validate(userWordValidation.getUserWords),
-        userWordController.getUserWordsController
-    );
-userWordRouter
-    .route('/not-remember/:userWordId')
-    .get(authMiddleware,userWordController.getNotRememberUserWords)
-userWordRouter
-    .route('/remember/:userWordId')
-    .get(authMiddleware,userWordController.getRememberUserWords)
+    .get(authMiddleware, validate(userWordValidation.getUserWords), userWordController.getUserWordsController);
+userWordRouter.route('/not-remember/:userWordId').get(authMiddleware, userWordController.getNotRememberUserWords);
+userWordRouter.route('/remember/:userWordId').get(authMiddleware, userWordController.getRememberUserWords);
 userWordRouter
     .route('/:userWordId/')
     .get(authMiddleware, roles('admin'), validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
@@ -30,11 +22,7 @@ userWordRouter
         validate(userWordValidation.updateUserWordById),
         userWordController.updateUserWordById
     )
-    .delete(
-        authMiddleware,
-        validate(userWordValidation.deleteUserWordById),
-        userWordController.deleteUserWordById
-    );
+    .delete(authMiddleware, validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
 userWordRouter
     .route('/:user-word/word/:wordId')
     .delete(
@@ -49,5 +37,8 @@ userWordRouter
         validate(userWordValidation.addWordToUserWordById),
         userWordController.addWordToUserWordByIdController
     );
-module.exports = userWordRouter;
 
+userWordRouter.route('/review-questions/:userWordId').get(userWordController.getReviewQuestion);
+userWordRouter.route('/update-remember/:userWordId').put(userWordController.updateRememberWord);
+
+module.exports = userWordRouter;

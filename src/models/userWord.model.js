@@ -10,10 +10,10 @@ const userWordSchema = new mongoose.Schema(
         },
         words: [
             {
-                wordId:{
+                wordId: {
                     type: Schema.Types.ObjectId,
                     ref: 'Word',
-                    required: [true, 'Please provide the wordID!']
+                    required: [true, 'Please provide the wordID!'],
                 },
                 isRemember: {
                     type: String,
@@ -21,7 +21,6 @@ const userWordSchema = new mongoose.Schema(
                 },
             },
         ],
-
     },
     {
         timestamps: true,
