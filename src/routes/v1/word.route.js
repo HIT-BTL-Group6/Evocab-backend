@@ -17,8 +17,7 @@ wordRouter
     )
     .get(
         validate(wordValidation.getWords),
-        wordController.getWords
-    );
+        wordController.getWords)
 
 wordRouter
     .route('/:wordId')

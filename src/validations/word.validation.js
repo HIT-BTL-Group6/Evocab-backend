@@ -11,13 +11,12 @@ const wordValidation = {
         vietnamese: Joi.string().required(),
         nameTopic: Joi.string().required(),
     }),
-
-    getWords: Joi.object().keys({
+    getWords:Joi.object().keys({
+        nameTopic:Joi.string(),
         sortBy: Joi.string(),
         limit: Joi.number().integer(),
         page: Joi.number().integer(),
     }),
-
     getWord: Joi.object().keys({
         wordId: Joi.string().custom(objectId).required(),
     }),

@@ -15,10 +15,14 @@ const createTopic = async (topicBody) => {
     return createdTopic;
 };
 
-const getTopics = async (filter, options) => {
+const getTopics = async (nameTopic, options) => {
+    const filter = {};
+    if (nameTopic) {
+        filter.nameTopic = nameTopic;
+    }
     const topics = await Topic.paginate(filter, options);
-    if (!topics) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Topic not found');
+    if (!topics.results || topics.results.length === 0) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Topics not found');
     }
     return topics;
 };
