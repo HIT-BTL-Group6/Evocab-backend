@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const UserWord = require('../models/userWord.model');
 const ApiError = require('../utils/ApiError');
+const Question = require('../models/question.model');
+const UseWord = require('../models/userWord.model');
+const Word = require('../models/word.model');
 
 const createUserWord = async (userWordBody) => {
     const existingUserWord = await UserWord.findOne({ userId: userWordBody.userId });
@@ -10,7 +13,6 @@ const createUserWord = async (userWordBody) => {
     const newUserWord = await UserWord.create(userWordBody);
     return newUserWord;
 };
-
 
 const getUserWords = async (filter, options) => {
     const userWords = await UserWord.paginate(filter, options);
@@ -26,8 +28,8 @@ const getRememberUserWordsIds = async (userWordId) => {
             throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
         }
 
-        const rememberedWords = userWord.words.filter(word => word.isRemember === 'true');
-        const wordIds = rememberedWords.map(word => word.wordId.toString());
+        const rememberedWords = userWord.words.filter((word) => word.isRemember === 'true');
+        const wordIds = rememberedWords.map((word) => word.wordId.toString());
         return wordIds;
     } catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
@@ -41,8 +43,8 @@ const getNotRememberUserWordsIds = async (userWordId) => {
             throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
         }
 
-        const notRememberedWords = userWord.words.filter(word => word.isRemember === 'false');
-        const wordIds = notRememberedWords.map(word => word.wordId.toString());
+        const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
+        const wordIds = notRememberedWords.map((word) => word.wordId.toString());
         return wordIds;
     } catch (error) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
@@ -86,7 +88,7 @@ const deleteWordFromUserWordById = async (userWordId, wordId) => {
     }
     userWord.words = userWord.words.filter((id) => id.toString() !== wordId);
     const updatedUserWord = await userWord.save();
-    return updatedUserWord;                                                        
+    return updatedUserWord;
 };
 const deleteUserWordById = async (userWordId) => {
     const deletedUserWord = await UserWord.findByIdAndDelete(userWordId);
@@ -94,6 +96,36 @@ const deleteUserWordById = async (userWordId) => {
         throw new ApiError(httpStatus.NOT_FOUND, 'User word not found');
     }
     return deletedUserWord;
+};
+
+const getReviewQuestion = async (userWordId) => {
+    const reviewWordIds = await getNotRememberUserWordsIds(userWordId);
+
+    const reviewQuestions = await Question.find({ 'answer.word_correct': { $in: reviewWordIds } }).exec();
+    if (!reviewQuestions.length) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng nào!');
+
+    return reviewQuestions;
+};
+
+const updateRememberWord = async (userWordId, userWordData, wordId) => {
+    const wordInfo = await Word.findById(wordId);
+    if (!wordInfo) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng này!');
+
+    const userWordInfo = await UseWord.findById(userWordId);
+    if (!userWordInfo) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng chưa thuộc này!');
+
+    const wordsOfUser = userWordInfo.words || [];
+
+    const wordIndexNeedUpdated = wordsOfUser.findIndex((wordObj) => wordObj.wordId.toString() === wordId);
+    if (wordIndexNeedUpdated === -1) throw new ApiError(httpStatus.NOT_FOUND, 'word need to update not exists!');
+
+    const updatedWordsOfUser = [...wordsOfUser];
+    updatedWordsOfUser[wordIndexNeedUpdated].isRemember = 'true';
+
+    userWordInfo.words = updatedWordsOfUser;
+    await userWordInfo.save();
+
+    return userWordInfo;
 };
 
 module.exports = {
@@ -105,6 +137,7 @@ module.exports = {
     updateUserWordById,
     deleteUserWordById,
     deleteWordFromUserWordById,
-    addWordToUserWordById
+    addWordToUserWordById,
+    getReviewQuestion,
+    updateRememberWord,
 };
-
