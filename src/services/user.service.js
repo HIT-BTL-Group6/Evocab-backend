@@ -14,6 +14,7 @@ const createUser = async (userBody) => {
     } else if (await User.isUsernameTaken(userBody.username)) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Username đã được đăng ký!');
     }
+    userBody.isActive = true;
     const user = await User.create(userBody);
     return user;
 };
