@@ -4,7 +4,7 @@ const { userValidation } = require('../../validations');
 const { userController } = require('../../controllers');
 const roles = require('../../middlewares/role.middleware');
 const authMiddleware = require('../../middlewares/auth.middleware');
-
+const upload = require('../../middlewares/upload.middleware');
 const userRouter = express.Router();
 
 userRouter.use(authMiddleware);
@@ -12,7 +12,7 @@ userRouter.use(authMiddleware);
 userRouter
     .route('/')
     .get(roles('admin'), validate(userValidation.getUsers), userController.getUsers)
-    .post(roles('admin'), validate(userValidation.createUser), userController.createUser);
+    .post(roles('admin'),upload.single('avatar'), validate(userValidation.createUser), userController.createUser);
 
 userRouter
     .route('/:userId')

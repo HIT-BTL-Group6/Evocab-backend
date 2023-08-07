@@ -97,6 +97,7 @@ const deleteUserWordById = async (userWordId) => {
     }
     return deletedUserWord;
 };
+<<<<<<< HEAD
 
 const getReviewQuestion = async (userWordId) => {
     const reviewWordIds = await getNotRememberUserWordsIds(userWordId);
@@ -128,6 +129,21 @@ const updateRememberWord = async (userWordId, userWordData, wordId) => {
     return userWordInfo;
 };
 
+=======
+const updateWordFromUserWordById = async (userWordId, wordId, updateBody) => {
+    const userWord = await UserWord.findById(userWordId);
+    if (!userWord) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
+    }
+    const wordIndex = userWord.words.findIndex(word => word.wordId.toString() === wordId);
+    if (wordIndex === -1) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Word not found in UserWord');
+    }
+    userWord.words[wordIndex].isRemember = updateBody.isRemember;
+    await userWord.save();
+    return userWord;
+};
+>>>>>>> 06e2780 (Update controllers, routes, services, utils, validations, models, middlewares, app.js and uploads)
 module.exports = {
     createUserWord,
     getUserWords,
@@ -138,6 +154,10 @@ module.exports = {
     deleteUserWordById,
     deleteWordFromUserWordById,
     addWordToUserWordById,
+<<<<<<< HEAD
     getReviewQuestion,
     updateRememberWord,
+=======
+    updateWordFromUserWordById
+>>>>>>> 06e2780 (Update controllers, routes, services, utils, validations, models, middlewares, app.js and uploads)
 };

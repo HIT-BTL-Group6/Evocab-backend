@@ -24,12 +24,16 @@ userWordRouter
     )
     .delete(authMiddleware, validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
 userWordRouter
-    .route('/:user-word/word/:wordId')
+    .route('/:userWordId/word/:wordId')
     .delete(
         authMiddleware,
         validate(userWordValidation.deleteWordFromUserWordById),
         userWordController.deleteWordFromUserWordByIdController
-    );
+    )
+    .put(
+        authMiddleware,
+        validate(userWordValidation.updateWordFromUserWordById),
+        userWordController.updateWordFromUserWordById)
 userWordRouter
     .route('/:userWordId/word/')
     .post(

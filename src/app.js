@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error.middleware');
 const ApiError = require('./utils/ApiError');
+const path = require('path')
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,8 @@ if (config.env !== 'test') {
 // parse json request body
 app.use(express.json());
 
+// config file static
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
@@ -38,4 +41,5 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
 module.exports = app;

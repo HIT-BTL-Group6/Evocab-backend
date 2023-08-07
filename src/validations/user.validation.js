@@ -11,6 +11,7 @@ const createUser = {
         // gender: Joi.string().valid('male', 'female'),
         // topicId: Joi.custom(objectId),
         // isActive: Joi.boolean(),
+        avatar:Joi.string()
     }),
 };
 
@@ -44,6 +45,7 @@ const updateUser = {
             // gender: Joi.string().valid('male', 'female'),
             topicId: Joi.custom(objectId),
             // isActive: Joi.boolean(),
+            avatar:Joi.string()
         })
         .min(1),
 };

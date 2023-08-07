@@ -10,12 +10,14 @@ const storage = multer.diskStorage({
             dest = path.join(uploadDirectory, 'image');
         } else if (file.fieldname === 'sound') {
             dest = path.join(uploadDirectory, 'sound');
+        } else if (file.fieldname === 'avatar') {
+            dest = path.join(uploadDirectory, 'avatar');
         }
         cb(null, dest);
     },
     filename: function (req, file, cb) {
         const extension = file.originalname.split('.').pop();
-        const fileName = file.originalname.replace(`.${extension}`, ''); // Lấy tên tệp gốc (không có phần mở rộng)
+        const fileName = file.originalname.replace(`.${extension}`, '');
         const finalFileName = fileName + '.' + extension;
         cb(null, finalFileName);
     },
@@ -30,6 +32,11 @@ const fileFilter = (req, file, cb) => {
     } else if (
         file.fieldname === 'sound' &&
         (file.mimetype === 'audio/mpeg' || file.mimetype === 'audio/mp3')
+    ) {
+        cb(null, true);
+    } else if (
+        file.fieldname === 'avatar' &&
+        file.mimetype.startsWith('image/')
     ) {
         cb(null, true);
     } else {

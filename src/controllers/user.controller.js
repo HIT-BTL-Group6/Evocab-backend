@@ -24,8 +24,15 @@ const getUser = catchAsync(async (req, res, next) => {
     });
 });
 
-const createUser = catchAsync(async (req, res, next) => {
-    const userData = req.body;
+const createUser = catchAsync(async (req, res,next) => {
+    const { path } = req.file;
+    const avatarPath = path.replace(/\\/g, '/');
+
+    const userData = {
+        ...req.body,
+        avatar: avatarPath, 
+    };
+
     const user = await userService.createUser(userData);
     res.status(httpStatus.CREATED).json({
         code: httpStatus.CREATED,
@@ -33,6 +40,8 @@ const createUser = catchAsync(async (req, res, next) => {
         data: user,
     });
 });
+
+
 
 const updateUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;

@@ -14,9 +14,11 @@ const createUser = async (userBody) => {
     } else if (await User.isUsernameTaken(userBody.username)) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Username đã được đăng ký!');
     }
-    userBody.isActive = true;
-    const user = await User.create(userBody);
-    return user;
+    const user = await User.findOne({ username: userBody.username });
+        if (user) {
+            throw new ApiError(httpStatus.BAD_REQUEST, 'Word is required!');
+        }
+        return User.create(userBody);
 };
 
 const updateUserById = async (userId, updateBody) => {
