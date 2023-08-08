@@ -10,7 +10,6 @@ const createWord = async (wordBody) => {
     const word = await Word.create(wordBody);
     return word;
 };
-
 const getWordById = async (id) => {
     const word = await Word.findById(id);
     if (!word) {
@@ -34,7 +33,6 @@ const deleteWordById = async (wordId) => {
     }
     return deletedWord;
 };
-
 const getWords = async (nameTopic, options) => {
     const filter = {};
     if (nameTopic) {
@@ -46,7 +44,6 @@ const getWords = async (nameTopic, options) => {
     }
     return words;
 };
-
 
 module.exports = {
     createWord,

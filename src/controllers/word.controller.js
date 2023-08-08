@@ -38,6 +38,7 @@ const getWords = catchAsync(async (req, res) => {
     });
 });
 
+
 const getWord = catchAsync(async (req, res) => {
     const wordId = req.params.wordId || req.body.id;
     const word = await wordService.getWordById(wordId);
