@@ -62,7 +62,15 @@ const deleteUserWordById = {
         userWordId: Joi.string().custom(objectId),
     }),
 };
-
+const updateWordFromUserWordById = {
+    params: Joi.object().keys({
+        userWordId: Joi.string().custom(objectId),
+        wordId: Joi.string().custom(objectId),
+    }),
+    body: Joi.object().keys({
+        isRemember: Joi.boolean().required(),
+    }),
+};
 module.exports = {
     createUserWord,
     getUserWords,
@@ -71,4 +79,5 @@ module.exports = {
     addWordToUserWordById,
     deleteWordFromUserWordById,
     deleteUserWordById,
+    updateWordFromUserWordById
 };

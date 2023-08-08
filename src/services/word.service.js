@@ -17,6 +17,7 @@ const getWordById = async (id) => {
     }
     return word;
 };
+
 const updateWordById = async (wordId, updateBody) => {
     const word = await Word.findByIdAndUpdate(wordId, updateBody, { new: true });
     if (!word) {
@@ -24,10 +25,11 @@ const updateWordById = async (wordId, updateBody) => {
     }
     return word;
 };
+
 const deleteWordById = async (wordId) => {
     const deletedWord = await Word.findByIdAndDelete(wordId);
     if (!deletedWord) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Word not found!');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Word not found');
     }
     return deletedWord;
 };
@@ -42,7 +44,6 @@ const getWords = async (nameTopic, options) => {
     }
     return words;
 };
-
 
 module.exports = {
     createWord,
