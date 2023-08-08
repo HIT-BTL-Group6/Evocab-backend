@@ -117,5 +117,5 @@ module.exports = {
     addWordToUserWordByIdController,
     deleteUserWordById,
     getRememberUserWords,
-    updateWordFromUserWordById
+    updateWordFromUserWordById,
 };

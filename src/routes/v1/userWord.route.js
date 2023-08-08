@@ -33,7 +33,8 @@ userWordRouter
     .put(
         authMiddleware,
         validate(userWordValidation.updateWordFromUserWordById),
-        userWordController.updateWordFromUserWordById)
+        userWordController.updateWordFromUserWordById
+    );
 userWordRouter
     .route('/:userWordId/word/')
     .post(
