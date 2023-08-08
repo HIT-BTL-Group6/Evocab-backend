@@ -12,12 +12,8 @@ const createUserWord = async (userWordBody) => {
 };
 
 const getUserWords = async (filter, options) => {
-    const userWordsData = await UserWord.find();
-    if (userWordsData) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');
-    }
     const userWords = await UserWord.paginate(filter, options);
-    if (!userWords) {
+    if (!userWords.results || userWords.results.length === 0) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');
     }
     return userWords;
@@ -27,7 +23,6 @@ const getRememberUserWordsIds = async (userWordId) => {
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
-
     const rememberedWords = userWord.words.filter((word) => word.isRemember === 'true');
     const wordIds = rememberedWords.map((word) => word.wordId.toString());
     if (wordIds) {
@@ -41,7 +36,6 @@ const getNotRememberUserWordsIds = async (userWordId) => {
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
-
     const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
     const wordIds = notRememberedWords.map((word) => word.wordId.toString());
     if (wordIds) {
