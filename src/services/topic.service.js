@@ -19,10 +19,6 @@ const getTopics = async (nameTopic, options) => {
     if (nameTopic) {
         filter.nameTopic = nameTopic;
     }
-    const topicsData = await Topic.find();
-    if(topicsData){
-        throw new ApiError(httpStatus.NOT_FOUND, 'Topics not found');
-    }
     const topics = await Topic.paginate(filter, options);
     if (!topics.results || topics.results.length === 0) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Topics not found');
