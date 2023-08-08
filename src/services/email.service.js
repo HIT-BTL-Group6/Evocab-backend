@@ -25,11 +25,13 @@ const sendEmail = async (to, subject, text) => {
 
 const sendResetPasswordEmail = async (to, username, emailToken, type) => {
     const subject = type;
-    const text = `Chào ${username},
-  Để đặt lại mật khẩu, vui lòng nhập mã OTP sau: ${emailToken}  
-  Trường hợp bạn không muốn đặt lại mật khẩu, xin vui lòng bỏ qua.
-  Mã sẽ hết hạn trong vòng 1 phút.
-  Xin cảm ơn`;
+    const text = `
+    <h2>ECOCAB</h2>
+    <h3>To reset your password, please enter the OTP code: ${emailToken}</h3>
+    <h3> In case you do not wish to reset your password, please ignore this message.</h3>
+    <h3>The code will expire within 1 minute.</h3>
+    <h3>Thank you!</h3>
+    `;
     await sendEmail(to, subject, text);
 };
 

@@ -7,8 +7,9 @@ const register = catchAsync(async (req, res, next) => {
 
     const user = await userService.createUser(userBody);
     res.status(httpStatus.CREATED).json({
-        status: 'Đăng ký thành công!',
-        user,
+        code: httpStatus.CREATED,
+        message: 'Register successfully!',
+        data: user,
     });
 });
 
@@ -17,9 +18,11 @@ const login = catchAsync(async (req, res, next) => {
 
     const user = await authService.login(username, password);
     const tokens = await tokenService.createAuthTokens(user);
-    return res.status(httpStatus.OK).json({
-        status: 'Đăng nhập thành công!',
-        tokens,
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Login successfully!',
+        data: tokens,
     });
 });
 
@@ -27,17 +30,22 @@ const forgotPassword = catchAsync(async (req, res, next) => {
     const { email } = req.body;
     const user = await authService.forgotPassword(email);
     await emailService.sendResetPasswordEmail(email, user.username, user.emailToken, 'Đặt lại mật khẩu');
-    return res.json({
-        emailToken: user.emailToken,
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Created emailToken successfully!',
+        data: user.emailToken,
     });
 });
 
 const resetPassword = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;
     await authService.resetPassword(email, password);
-    return res.status(200).json({
-        status: httpStatus.NO_CONTENT,
-        message: 'Đặt lại mật khẩu thành công!',
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Reset password successfully!',
+        data: [],
     });
 });
 

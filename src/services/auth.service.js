@@ -8,7 +8,7 @@ const login = async (username, password) => {
         username,
     }).select('+password');
     if (!user || !(await user.isPasswordMatch(password))) {
-        throw new ApiError('Tài khoản hoặc mật khẩu không chính xác!', httpStatus.NOT_FOUND);
+        throw new ApiError(httpStatus.NOT_FOUND, 'Username or password is incorrect!');
     }
     return user;
 };
@@ -19,7 +19,7 @@ const forgotPassword = async (email) => {
         isEmailVerified: true,
     });
     if (!user) {
-        throw new ApiError('Email chưa được xác thực', httpStatus.NOT_FOUND);
+        throw new ApiError(httpStatus.NOT_FOUND, 'Email has not been verified!');
     }
 
     const min = 100000;
@@ -38,7 +38,7 @@ const resetPassword = async (email, password) => {
         isEmailVerified: true,
     });
     if (!user) {
-        throw new ApiError('Email không đúng', httpStatus.NOT_FOUND);
+        throw new ApiError(httpStatus.NOT_FOUND, 'Email is incorrect!');
     }
     user.password = password;
     await Token.deleteMany({ user: user.id, type: tokenTypes.RESET_PASSWORD });

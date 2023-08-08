@@ -26,7 +26,6 @@ const userSchema = new Schema(
             private: true, // used by the toJSON plugin
             select: false,
         },
-        //  passwordConfirm:,
         email: {
             type: String,
             required: true,

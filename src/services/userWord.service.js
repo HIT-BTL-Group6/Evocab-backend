@@ -1,9 +1,6 @@
 const httpStatus = require('http-status');
 const UserWord = require('../models/userWord.model');
 const ApiError = require('../utils/ApiError');
-// const Question = require('../models/question.model');
-// const UseWord = require('../models/userWord.model');
-// const Word = require('../models/word.model');
 
 const createUserWord = async (userWordBody) => {
     const existingUserWord = await UserWord.findOne({ userId: userWordBody.userId });
@@ -16,7 +13,7 @@ const createUserWord = async (userWordBody) => {
 
 const getUserWords = async (filter, options) => {
     const userWordsData = await UserWord.find();
-    if(userWordsData){
+    if (userWordsData) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');
     }
     const userWords = await UserWord.paginate(filter, options);

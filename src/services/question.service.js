@@ -10,7 +10,7 @@ const getQuestionById = async (questionId) => {
         select: 'nameTopic',
     });
 
-    if (!question) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy câu hỏi này!');
+    if (!question) throw new ApiError(httpStatus.NOT_FOUND, 'Question not found!');
     return question;
 };
 
@@ -18,13 +18,13 @@ const createQuestion = async (questionBody) => {
     const { topic: topicId } = questionBody;
     const wordCorrectId = questionBody.answer?.word_correct;
     const existWord = Word.findById(wordCorrectId);
-    if (!existWord) throw new ApiError(httpStatus.NOT_FOUND, 'Từ này không tồn tại!');
+    if (!existWord) throw new ApiError(httpStatus.NOT_FOUND, 'Word not found!');
 
-    if (!topicId) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
+    if (!topicId) throw new ApiError(httpStatus.NOT_FOUND, 'Topic is required!');
 
     const topicInfo = await Topic.findOne({ _id: topicId });
     if (!topicInfo) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Topic này không tồn tại!');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Topic not found!');
     }
 
     const newQuestion = await Question.create(questionBody);
@@ -35,17 +35,17 @@ const createQuestion = async (questionBody) => {
 const updateQuestionById = async (questionId, questionBody) => {
     const { topic } = questionBody;
 
-    if (!topic) throw new ApiError(httpStatus.NOT_FOUND, 'Trường topic không được phép để trống!');
+    if (!topic) throw new ApiError(httpStatus.NOT_FOUND, 'Topic is required!');
 
     const topicInfo = await Topic.findOne({ nameTopic: topic });
     if (!topicInfo) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Topic này không tồn tại!');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Topic not found!');
     }
 
     const updatedQuestion = Question.findByIdAndUpdate(questionId, questionBody, { new: true });
 
     if (!updatedQuestion) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy câu hỏi này!');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Question not found!');
     }
     return updatedQuestion;
 };
@@ -53,7 +53,7 @@ const updateQuestionById = async (questionId, questionBody) => {
 const deleteQuestionById = async (questionId) => {
     const deletedQuestion = await User.findByIdAndDelete(questionId);
     if (!deletedQuestion) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Câu hỏi này không tồn tại!');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Question not found!');
     }
     return deletedQuestion;
 };
