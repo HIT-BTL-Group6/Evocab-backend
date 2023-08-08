@@ -8,6 +8,14 @@ const getUserById = async (userId) => {
     return user;
 };
 
+const getUsers = async (filter, options) => {
+    const users = await User.paginate(filter, options);
+    if (!users) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Users not found');
+    }
+    return users;
+};
+
 const createUser = async (userBody) => {
     if (await User.isEmailTaken(userBody.email)) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Email already exists!');
@@ -41,6 +49,7 @@ const deleteUserById = async (userId) => {
 };
 
 module.exports = {
+    getUsers,
     getUserById,
     createUser,
     updateUserById,

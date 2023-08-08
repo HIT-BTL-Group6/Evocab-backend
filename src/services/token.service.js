@@ -51,7 +51,7 @@ const verifyToken = async (token, type) => {
     const payload = jwt.verify(token, config.jwt.secret);
     const tokenInfo = await Token.findOne({ token, type, user: payload.userId });
     if (!tokenInfo) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Token not found');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Token not found!');
     }
     return tokenInfo;
 };

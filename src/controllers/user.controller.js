@@ -6,7 +6,10 @@ const User = require('../models/user.model');
 const { userService } = require('../services');
 
 const getUsers = catchAsync(async (req, res, next) => {
-    const users = await User.find();
+    const filter = pick(req.query, ['userWordId']);
+    const options = pick(req.query, ['sortBy', 'limit', 'page']);
+    const users = await userService.getUsers(filter, options);
+
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Get users successfully!',
@@ -24,13 +27,13 @@ const getUser = catchAsync(async (req, res, next) => {
     });
 });
 
-const createUser = catchAsync(async (req, res,next) => {
+const createUser = catchAsync(async (req, res, next) => {
     const { path } = req.file;
     const avatarPath = path.replace(/\\/g, '/');
 
     const userData = {
         ...req.body,
-        avatar: avatarPath, 
+        avatar: avatarPath,
     };
 
     const user = await userService.createUser(userData);
@@ -40,8 +43,6 @@ const createUser = catchAsync(async (req, res,next) => {
         data: user,
     });
 });
-
-
 
 const updateUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;
