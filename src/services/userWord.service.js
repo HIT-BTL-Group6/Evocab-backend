@@ -28,8 +28,8 @@ const getRememberUserWordsIds = async (userWordId) => {
     }
     const rememberedWords = userWord.words.filter((word) => word.isRemember === 'true');
     const wordIds = rememberedWords.map((word) => word.wordId.toString());
-    if (wordIds) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
+    if (wordIds.length === 0|| !wordIds) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No remembered words found');
     }
     return wordIds;
 };
@@ -41,8 +41,8 @@ const getNotRememberUserWordsIds = async (userWordId) => {
     }
     const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
     const wordIds = notRememberedWords.map((word) => word.wordId.toString());
-    if (wordIds) {
-        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
+    if (wordIds.length === 0 || !wordIds) {
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
     }
     return wordIds;
 };
