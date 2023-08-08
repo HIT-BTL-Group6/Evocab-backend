@@ -42,7 +42,7 @@ userWordRouter
         userWordController.addWordToUserWordByIdController
     );
 
-userWordRouter.route('/review-questions/:userWordId').get(userWordController.getReviewQuestion);
-userWordRouter.route('/update-remember/:userWordId').put(userWordController.updateRememberWord);
+// userWordRouter.route('/review-questions/:userWordId').get(userWordController.getReviewQuestion);
+// userWordRouter.route('/update-remember/:userWordId').put(userWordController.updateRememberWord);
 
 module.exports = userWordRouter;
