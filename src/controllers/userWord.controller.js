@@ -107,6 +107,31 @@ const deleteUserWordById = catchAsync(async (req, res) => {
     });
 });
 
+const getReviewQuestion = catchAsync(async (req, res) => {
+    const { userWordId } = req.params;
+
+    const reviewQuestions = await userWordService.getReviewQuestion(userWordId);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'Get review questions successfully!',
+        data: reviewQuestions,
+    });
+});
+
+const updateRememberWord = catchAsync(async (req, res) => {
+    const [{ isRemember, wordId }] = req.body.words;
+    const { userWordId } = req.params;
+
+    const updatedUserWord = await userWordService.updateRememberWord(userWordId, { isRemember }, wordId);
+
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'IsRemember updated successfully',
+        data: updatedUserWord,
+    });
+});
+
 module.exports = {
     createUserWord,
     getUserWordsController,
@@ -118,4 +143,6 @@ module.exports = {
     deleteUserWordById,
     getRememberUserWords,
     updateWordFromUserWordById,
+    updateRememberWord,
+    getReviewQuestion,
 };
