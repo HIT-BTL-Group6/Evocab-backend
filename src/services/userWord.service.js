@@ -1,6 +1,9 @@
 const httpStatus = require('http-status');
 const UserWord = require('../models/userWord.model');
 const ApiError = require('../utils/ApiError');
+const Question = require('../models/question.model');
+const UseWord = require('../models/userWord.model');
+const Word = require('../models/word.model');
 
 const createUserWord = async (userWordBody) => {
     const existingUserWord = await UserWord.findOne({ userId: userWordBody.userId });
@@ -13,7 +16,7 @@ const createUserWord = async (userWordBody) => {
 
 const getUserWords = async (filter, options) => {
     const userWords = await UserWord.paginate(filter, options);
-    if (!userWords|| userWords.length === 0) {
+    if (!userWords || userWords.length === 0) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');
     }
     return userWords;
@@ -103,6 +106,37 @@ const updateWordFromUserWordById = async (userWordId, wordId, updateBody) => {
     await userWord.save();
     return userWord;
 };
+
+const getReviewQuestion = async (userWordId) => {
+    const reviewWordIds = await getNotRememberUserWordsIds(userWordId);
+
+    const reviewQuestions = await Question.find({ 'answer.word_correct': { $in: reviewWordIds } }).exec();
+    if (!reviewQuestions.length) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng nào!');
+
+    return reviewQuestions;
+};
+
+const updateRememberWord = async (userWordId, userWordData, wordId) => {
+    const wordInfo = await Word.findById(wordId);
+    if (!wordInfo) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng này!');
+
+    const userWordInfo = await UseWord.findById(userWordId);
+    if (!userWordInfo) throw new ApiError(httpStatus.NOT_FOUND, 'Không tìm thấy từ vựng chưa thuộc này!');
+
+    const wordsOfUser = userWordInfo.words || [];
+
+    const wordIndexNeedUpdated = wordsOfUser.findIndex((wordObj) => wordObj.wordId.toString() === wordId);
+    if (wordIndexNeedUpdated === -1) throw new ApiError(httpStatus.NOT_FOUND, 'word need to update not exists!');
+
+    const updatedWordsOfUser = [...wordsOfUser];
+    updatedWordsOfUser[wordIndexNeedUpdated].isRemember = 'true';
+
+    userWordInfo.words = updatedWordsOfUser;
+    await userWordInfo.save();
+
+    return userWordInfo;
+};
+
 module.exports = {
     createUserWord,
     getUserWords,
@@ -114,4 +148,6 @@ module.exports = {
     deleteWordFromUserWordById,
     addWordToUserWordById,
     updateWordFromUserWordById,
+    getReviewQuestion,
+    updateRememberWord,
 };
