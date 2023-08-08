@@ -39,7 +39,7 @@ const getWords = async (nameTopic, options) => {
         filter.nameTopic = nameTopic;
     }
     const words = await Word.paginate(filter, options);
-    if (!words.results || words.results.length === 0) {
+    if (!words || words.length === 0) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Words not found');
     }
     return words;
