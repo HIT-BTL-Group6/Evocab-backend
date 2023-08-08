@@ -1,6 +1,8 @@
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 
+const ApiError = require('../utils/ApiError');
+const httpStatus = require('http-status');
 const { Token } = require('../models');
 const tokenTypes = require('../config/tokens');
 const config = require('../config/config');
@@ -49,7 +51,7 @@ const verifyToken = async (token, type) => {
     const payload = jwt.verify(token, config.jwt.secret);
     const tokenInfo = await Token.findOne({ token, type, user: payload.userId });
     if (!tokenInfo) {
-        throw new Error('Không tồn tại token');
+        throw new ApiError(httpStatus.NOT_FOUND, 'Token not found');
     }
     return tokenInfo;
 };
