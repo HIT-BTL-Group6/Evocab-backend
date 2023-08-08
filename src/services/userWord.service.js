@@ -15,6 +15,10 @@ const createUserWord = async (userWordBody) => {
 };
 
 const getUserWords = async (filter, options) => {
+    const userWordsData = await UserWord.find();
+    if(userWordsData){
+        throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');
+    }
     const userWords = await UserWord.paginate(filter, options);
     if (!userWords) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWords not found');

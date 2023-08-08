@@ -7,7 +7,7 @@ const createTopic = catchAsync(async (req, res) => {
     const topicData = req.body;
     const topicCreated = await topicService.createTopic(topicData);
     res.status(httpStatus.CREATED).json({
-        status: httpStatus.CREATED,
+        code: httpStatus.CREATED,
         message: 'Topic created successfully!',
         data: topicCreated,
     });
@@ -18,7 +18,7 @@ const getTopics = catchAsync(async (req, res) => {
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const topicData = await topicService.getTopics(nameTopic, options);
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Topics retrieved successfully!',
         data: topicData,
     });
@@ -29,7 +29,7 @@ const getTopicById = catchAsync(async (req, res) => {
     const topic = await topicService.getTopicById(topicId);
 
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Topic retrieved successfully!',
         data: topic,
     });
@@ -40,7 +40,7 @@ const updateTopicById = catchAsync(async (req, res) => {
     const topic = req.body;
     const topicUpdated = await topicService.updateTopicById(topicId, topic);
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Topic updated successfully!',
         data: topicUpdated,
     });
@@ -50,7 +50,7 @@ const deleteWordFromTopicByIdController = catchAsync(async (req, res) => {
     const { topicId, wordId } = req.params;
     const wordDeleted = await topicService.deleteWordFromTopicById(topicId, wordId);
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Word deleted from Topic successfully!',
         data: wordDeleted,
     });
@@ -62,7 +62,7 @@ const addWordToTopicByIdController = catchAsync(async (req, res) => {
 
     const topics = await topicService.addWordToTopicById(topicId, { words });
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Words added to Topic successfully!',
         data: topics,
     });
@@ -72,7 +72,7 @@ const deleteTopicById = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const topicDeleted = await topicService.deleteTopicById(topicId);
     res.status(httpStatus.OK).json({
-        status: httpStatus.OK,
+        code: httpStatus.OK,
         message: 'Topic deleted successfully!',
         data: topicDeleted,
     });

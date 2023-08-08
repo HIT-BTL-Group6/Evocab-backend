@@ -1,7 +1,6 @@
 const httpStatus = require('http-status');
 const Topic = require('../models/topic.model');
 const ApiError = require('../utils/ApiError');
-const mongoose = require('mongoose');
 
 const createTopic = async (topicBody) => {
     const topic = await Topic.findOne({ nameTopic:topicBody.nameTopic });
@@ -19,6 +18,10 @@ const getTopics = async (nameTopic, options) => {
     const filter = {};
     if (nameTopic) {
         filter.nameTopic = nameTopic;
+    }
+    const topicsData = await Topic.find();
+    if(topicsData){
+        throw new ApiError(httpStatus.NOT_FOUND, 'Topics not found');
     }
     const topics = await Topic.paginate(filter, options);
     if (!topics.results || topics.results.length === 0) {

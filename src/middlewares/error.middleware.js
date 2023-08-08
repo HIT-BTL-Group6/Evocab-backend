@@ -53,23 +53,27 @@ const errorConverter = (err, req, res, next) => {
         const statusCode =
             error.statusCode || error instanceof mongoose.Error ? httpStatus.BAD_REQUEST : httpStatus.INTERNAL_SERVER_ERROR;
         const message = error.message || httpStatus[statusCode];
-        error = new ApiError(statusCode, message, false);
+        const data = []; // Thêm trường data ở đây
+        error = new ApiError(statusCode, message, false, data);
     }
     next(error);
 };
 
 const errorHandler = (err, req, res, next) => {
-    let { statusCode, message } = err;
+    let { statusCode, message, data } = err;
+
     if (config.env === 'production' && !err.isOperational) {
         statusCode = httpStatus.INTERNAL_SERVER_ERROR;
         message = httpStatus[httpStatus.INTERNAL_SERVER_ERROR];
+        data = [];
     }
 
     res.locals.errorMessage = err.message;
 
     const response = {
-        status: statusCode,
+        code: statusCode,
         message,
+        data,
     };
 
     if (config.env === 'development') {
@@ -79,7 +83,10 @@ const errorHandler = (err, req, res, next) => {
 
     res.status(statusCode).json(response);
 };
+
 module.exports = {
     errorConverter,
     errorHandler,
 };
+
+
