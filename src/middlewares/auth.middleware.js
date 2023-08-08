@@ -15,7 +15,7 @@ const authMiddleware = catchAsync(async (req, res, next) => {
     if (!accessToken) {
         throw new ApiError('Phiên bản hết hạn. Vui lòng đăng nhập lại!', httpStatus[401]);
     }
-    const payload = jwt.verify(accessToken, process.env.SECRET_KEY || 'evocabbackend');
+    const payload = jwt.verify(accessToken, process.env.JWT_SECRET_KEY || 'evocabbackend');
     if (!payload) throw new ApiError('Vui lòng xác thực!', httpStatus[401]);
     const { userId } = payload;
     const user = await User.findById(userId);
