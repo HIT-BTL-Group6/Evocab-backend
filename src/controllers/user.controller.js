@@ -6,9 +6,10 @@ const User = require('../models/user.model');
 const { userService } = require('../services');
 
 const getUsers = catchAsync(async (req, res, next) => {
-    const filter = pick(req.query, ['userWordId']);
-    const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    const users = await userService.getUsers(filter, options);
+    const { sortBy, limit = 10, page = 1, ...conditions } = req.query;
+    const skip = (page - 1) * limit;
+
+    const users = await userService.getUsers(limit, skip, conditions);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -33,7 +34,7 @@ const createUser = catchAsync(async (req, res, next) => {
 
     const userData = {
         ...req.body,
-        avatar: avatarPath,
+        avatar: avatarPath || null,
     };
 
     const user = await userService.createUser(userData);
