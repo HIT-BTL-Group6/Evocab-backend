@@ -36,11 +36,12 @@ const getRememberUserWords = catchAsync(async (req, res) => {
 
 const getNotRememberUserWords = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
-    const userWords = await userWordService.getNotRememberUserWordsIds(userWordId);
+    const words = await userWordService.getNotRememberUserWords(userWordId);
+    console.log(words);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Words not yet learned retrieved successfully',
-        data: userWords,
+        data: words,
     });
 });
 

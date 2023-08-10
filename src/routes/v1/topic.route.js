@@ -12,7 +12,7 @@ topicRouter
     .get(validate(topicValidation.getTopics), topicController.getTopics);
 topicRouter
     .route('/:topicId')
-    .get(authMiddleware,validate(topicValidation.getTopicById), topicController.getTopicById)
+    .get(validate(topicValidation.getTopicById), topicController.getTopicById)
     .put(authMiddleware,roles('admin'), validate(topicValidation.updateTopicById), topicController.updateTopicById)
     .delete(authMiddleware,roles('admin'),validate(topicValidation.deleteTopicById), topicController.deleteTopicById);
 topicRouter
