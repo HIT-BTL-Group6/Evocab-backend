@@ -11,10 +11,10 @@ userWordRouter
     .route('/')
     .post(authMiddleware, roles('admin'), validate(userWordValidation.createUserWord), userWordController.createUserWord)
     .get(authMiddleware, validate(userWordValidation.getUserWords), userWordController.getUserWordsController);
-userWordRouter.route('/not-remember/:userWordId').get(authMiddleware, userWordController.getNotRememberUserWords);
-userWordRouter.route('/remember/:userWordId').get(authMiddleware, userWordController.getRememberUserWords);
+// userWordRouter.route('/not-remember/:userWordId').get(authMiddleware, userWordController.getNotRememberUserWords);
+// userWordRouter.route('/remember/:userWordId').get(authMiddleware, userWordController.getRememberUserWords);
 userWordRouter
-    .route('/:userWordId/')
+    .route('/:userWordId')
     .get(authMiddleware, roles('admin'), validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
     .put(
         authMiddleware,
@@ -22,28 +22,27 @@ userWordRouter
         validate(userWordValidation.updateUserWordById),
         userWordController.updateUserWordById
     )
-    .delete(authMiddleware, validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
+    .delete(authMiddleware,roles('admin'), validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
 userWordRouter
-    .route('/:userWordId/word/:wordId')
+    .route('/delete-word/:userWordId')
     .delete(
-        authMiddleware,
         validate(userWordValidation.deleteWordFromUserWordById),
         userWordController.deleteWordFromUserWordByIdController
     )
-    .put(
-        authMiddleware,
-        validate(userWordValidation.updateWordFromUserWordById),
-        userWordController.updateWordFromUserWordById
-    );
 userWordRouter
-    .route('/:userWordId/word/')
+    .route('/add-word/:userWordId')
     .post(
-        authMiddleware,
         validate(userWordValidation.addWordToUserWordById),
         userWordController.addWordToUserWordByIdController
     );
-
+userWordRouter.route('/remember-word/:userWordId').get( userWordController.getRememberUserWords);
+userWordRouter.route('/not-remember-word/:userWordId').get(userWordController.getRememberUserWords);
+userWordRouter
+    .route('/update-word-remember/:userWordId')
+    .put(
+        validate(userWordValidation.updateWordFromUserWordById),
+        userWordController.updateWordFromUserWordById
+    );
 userWordRouter.route('/review-questions/:userWordId').get(userWordController.getReviewQuestion);
 userWordRouter.route('/update-remember/:userWordId').put(userWordController.updateRememberWord);
-
 module.exports = userWordRouter;

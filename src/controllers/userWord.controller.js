@@ -66,7 +66,8 @@ const updateUserWordById = catchAsync(async (req, res) => {
 });
 
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
-    const { userWordId, wordId } = req.params;
+    const { userWordId} = req.params;
+    const wordId = req.body.wordId;
     const wordDeleted = await userWordService.deleteWordFromUserWordById(userWordId, wordId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -77,8 +78,8 @@ const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
 
 const addWordToUserWordByIdController = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
-    const words = req.body.words;
-    const userWords = await userWordService.addWordToUserWordById(userWordId, { words });
+    const {wordId,isRemember} = req.body;
+    const userWords = await userWordService.addWordToUserWordById(userWordId,wordId,isRemember );
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Word added to UserWord successfully!',
@@ -87,16 +88,15 @@ const addWordToUserWordByIdController = catchAsync(async (req, res) => {
 });
 
 const updateWordFromUserWordById = catchAsync(async (req, res) => {
-    const { userWordId, wordId } = req.params;
-    const updateBody = req.body;
-    const updatedUserWord = await userWordService.updateWordFromUserWordById(userWordId, wordId, updateBody);
+    const { userWordId } = req.params;
+    const { wordId} = req.body;
+    const updatedUserWord = await userWordService.updateWordIsRemember(userWordId, wordId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
-        message: 'Word updated in UserWord successfully!',
+        message: 'Words updated in UserWord successfully!',
         data: updatedUserWord,
     });
 });
-
 const deleteUserWordById = catchAsync(async (req, res) => {
     const { userWordId } = req.params;
     const userWordDeleted = await userWordService.deleteUserWordById(userWordId);

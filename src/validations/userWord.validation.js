@@ -21,18 +21,18 @@ const getUserWords = {
 
 const getUserWordById = {
     params: Joi.object().keys({
-        userWordId: Joi.string().custom(objectId),
+        userWordId: Joi.string().custom(objectId).required(),
     }),
 };
 
 const updateUserWordById = {
     params: Joi.object().keys({
-        userWordId: Joi.string().custom(objectId),
+        userWordId: Joi.string().custom(objectId).required(),
     }),
     body: Joi.object().keys({
-        userId: Joi.string().custom(objectId),
+        userId: Joi.string().custom(objectId).required(),
         words: Joi.array().items(Joi.object({
-            wordId: Joi.string().custom(objectId),
+            wordId: Joi.string().custom(objectId).required(),
             isRemember: Joi.boolean(),
         })).min(1),
     }),
@@ -43,32 +43,31 @@ const addWordToUserWordById = {
         userWordId: Joi.string().custom(objectId),
     }),
     body: Joi.object().keys({
-        words: Joi.array().items(Joi.object({
-            wordId: Joi.string().custom(objectId),
-            isRemember: Joi.boolean(),
-        }))
+        wordId: Joi.string().custom(objectId).required(),
+        isRemember: Joi.boolean().default(false),
     }),
 };
 
 const deleteWordFromUserWordById = {
     params: Joi.object().keys({
-        userWordId: Joi.string().custom(objectId),
-        wordId: Joi.string().custom(objectId),
+        userWordId: Joi.string().custom(objectId).required(),
+    }),
+    body: Joi.object().keys({
+        wordId: Joi.string().custom(objectId).required(),
     }),
 };
 
 const deleteUserWordById = {
     params: Joi.object().keys({
-        userWordId: Joi.string().custom(objectId),
+        userWordId: Joi.string().custom(objectId).required(),
     }),
 };
 const updateWordFromUserWordById = {
     params: Joi.object().keys({
-        userWordId: Joi.string().custom(objectId),
-        wordId: Joi.string().custom(objectId),
+        userWordId: Joi.string().custom(objectId).required(),
     }),
     body: Joi.object().keys({
-        isRemember: Joi.boolean().required(),
+        wordId: Joi.string().custom(objectId).required(),
     }),
 };
 module.exports = {
