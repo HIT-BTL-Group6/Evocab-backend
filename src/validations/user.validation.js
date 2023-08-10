@@ -3,21 +3,22 @@ const { password, objectId } = require('./custom.validation');
 
 const createUser = {
     body: Joi.object().keys({
-        email: Joi.string().email(),
-        password: Joi.string().custom(password),
+        email: Joi.string().email().required(),
+        password: Joi.string().custom(password).required(),
         role: Joi.string().valid('user', 'admin'),
         // age: Joi.number(),
-        username: Joi.string().required(),
+        username: Joi.string().required().required(),
         // gender: Joi.string().valid('male', 'female'),
         // topicId: Joi.custom(objectId),
         // isActive: Joi.boolean(),
-        avatar:Joi.string()
+        avatar: Joi.string(),
     }),
 };
 
 const getUsers = {
     query: Joi.object().keys({
-        name: Joi.string(),
+        username: Joi.string(),
+        email: Joi.string(),
         role: Joi.string(),
         sortBy: Joi.string(),
         limit: Joi.number().integer(),
@@ -45,7 +46,7 @@ const updateUser = {
             // gender: Joi.string().valid('male', 'female'),
             topicId: Joi.custom(objectId),
             // isActive: Joi.boolean(),
-            avatar:Joi.string()
+            avatar: Joi.string(),
         })
         .min(1),
 };

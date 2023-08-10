@@ -8,8 +8,12 @@ const getUserById = async (userId) => {
     return user;
 };
 
-const getUsers = async (filter, options) => {
-    const users = await User.paginate(filter, options);
+const getUsers = async (limit, skip, conditions) => {
+    const users = await User.find(conditions).limit(limit).skip(skip);
+    // .populate({
+    //     path: 'topicId',
+    //     select: nameTopic,
+    // });
     if (!users) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Users not found');
     }

@@ -43,7 +43,7 @@ userWordRouter
         userWordController.addWordToUserWordByIdController
     );
 
-userWordRouter.route('/not-remember/:userWordId').get(authMiddleware, userWordController.getNotRememberUserWords);
-userWordRouter.route('/remember/:userWordId').get(authMiddleware, userWordController.getRememberUserWords);
+userWordRouter.route('/review-questions/:userWordId').get(userWordController.getReviewQuestion);
+userWordRouter.route('/update-remember/:userWordId').put(userWordController.updateRememberWord);
 
 module.exports = userWordRouter;
