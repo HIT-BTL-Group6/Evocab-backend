@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const Topic = require('../models/topic.model');
+const Word = require('../models/word.model')
 const ApiError = require('../utils/ApiError');
 
 const createTopic = async (topicBody) => {
@@ -28,13 +29,15 @@ const getTopics = async (nameTopic, options) => {
 
 const getTopicById = async (id) => {
     const topic = await Topic.findById(id);
+    const nameTopic = topic.nameTopic;
+    const words = await Word.find({ nameTopic: nameTopic });
 
-    if (!topic) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Topic not found');
+    if (!words || words.length === 0) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Words in Topic not found');
     }
-    return topic;
-};
 
+    return words;
+};
 const updateTopicById = async (topicId, updateBody) => {
     const topic = await Topic.findByIdAndUpdate(topicId, updateBody, { new: true });
     if (!topic) {

@@ -36,7 +36,7 @@ userWordRouter
         userWordController.addWordToUserWordByIdController
     );
 userWordRouter.route('/remember-word/:userWordId').get( userWordController.getRememberUserWords);
-userWordRouter.route('/not-remember-word/:userWordId').get(userWordController.getRememberUserWords);
+userWordRouter.route('/not-remember-word/:userWordId').get(userWordController.getNotRememberUserWords);
 userWordRouter
     .route('/update-word-remember/:userWordId')
     .put(

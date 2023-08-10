@@ -29,12 +29,16 @@ const getUser = catchAsync(async (req, res, next) => {
 });
 
 const createUser = catchAsync(async (req, res, next) => {
-    const { path } = req.file;
-    const avatarPath = path.replace(/\\/g, '/');
+    const avatarPath = null;
+
+    if (req.file) { // Kiểm tra xem có tệp ảnh được tải lên hay không
+        const { path } = req.file;
+        avatarPath = path.replace(/\\/g, '/');
+    }
 
     const userData = {
         ...req.body,
-        avatar: avatarPath || null,
+        avatar: avatarPath,
     };
 
     const user = await userService.createUser(userData);
@@ -44,6 +48,7 @@ const createUser = catchAsync(async (req, res, next) => {
         data: user,
     });
 });
+
 
 const updateUser = catchAsync(async (req, res, next) => {
     const { userId } = req.params;

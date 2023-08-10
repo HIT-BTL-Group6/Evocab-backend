@@ -34,17 +34,20 @@ const getRememberUserWordsIds = async (userWordId) => {
     return wordIds;
 };
 
-const getNotRememberUserWordsIds = async (userWordId) => {
+const getNotRememberUserWords = async (userWordId) => {
     const userWord = await UserWord.findById(userWordId);
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
     const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
     const wordIds = notRememberedWords.map((word) => word.wordId.toString());
+    
     if (wordIds.length === 0 || !wordIds) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
     }
-    return wordIds;
+    
+    const words = await Word.find({ _id: { $in: wordIds } }, 'word pronunciation vietnamese'); // Truy vấn các trường word, pronunciation và vietnamese
+    return words;
 };
 
 const getUserWordById = async (userWordId) => {
@@ -144,7 +147,7 @@ module.exports = {
     createUserWord,
     getUserWords,
     getRememberUserWordsIds,
-    getNotRememberUserWordsIds,
+    getNotRememberUserWords,
     getUserWordById,
     updateUserWordById,
     deleteUserWordById,
