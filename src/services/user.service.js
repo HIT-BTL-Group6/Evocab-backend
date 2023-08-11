@@ -30,6 +30,8 @@ const createUser = async (userBody) => {
     if (user) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Please fill in all the required information!');
     }
+
+    userBody.isActive = true;
     return User.create(userBody);
 };
 
