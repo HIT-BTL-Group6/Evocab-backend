@@ -31,7 +31,7 @@ const getUser = catchAsync(async (req, res, next) => {
 const createUser = catchAsync(async (req, res, next) => {
     const avatarPath = null;
 
-    if (req.file) { // Kiểm tra xem có tệp ảnh được tải lên hay không
+    if (req.file) { 
         const { path } = req.file;
         avatarPath = path.replace(/\\/g, '/');
     }
