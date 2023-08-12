@@ -45,7 +45,10 @@ const getNotRememberUserWords = async (userId) => {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
     }
 
-    const words = await Word.find({ _id: { $in: wordIds } }, 'word pronunciation vietnamese'); // Truy vấn các trường word, pronunciation và vietnamese
+    const words = await Word.find({ _id: { $in: wordIds } }, 'word pronunciation vietnamese'); 
+    if(words){
+        throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
+    }
     return words;
 };
 
