@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const Word = require('../models/word.model');
 const ApiError = require('../utils/ApiError');
+const Topic = require('../models/topic.model');
 
 const createWord = async (wordBody) => {
     const existingWord = await Word.findOne({ word: wordBody.word });
@@ -35,9 +36,9 @@ const deleteWordById = async (wordId) => {
 };
 const getWords = async (topicId, options) => {
     const filter = {};
-    const nameTopic = await Word.findById(topicId);
-    if (nameTopic) {
-        filter.nameTopic= nameTopic;
+    const topic = await Topic.findById(topicId);
+    if (topic) {
+        filter.nameTopic= topic.nameTopic;
     }
     const words = await Word.paginate(filter, options);
     if (!words || words.length === 0) {
