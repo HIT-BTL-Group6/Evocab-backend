@@ -46,10 +46,10 @@ const updateStartExamTime = catchAsync(async (req, res, next) => {
     });
 });
 
-const updateEndExamTimeResult = catchAsync(async (req, res, next) => {
-    const { endExamTime, result } = req.body;
+const updateEndExam = catchAsync(async (req, res, next) => {
+    const { endExamTime, result, status } = req.body;
     const { examId } = req.params;
-    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { endExamTime, result });
+    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { endExamTime, result, status });
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -99,7 +99,7 @@ module.exports = {
     getExamsOfUser,
     createExam,
     updateStartExamTime,
-    updateEndExamTimeResult,
+    updateEndExam,
     updateExamOfUser,
     deleteExamOfUser,
 };
