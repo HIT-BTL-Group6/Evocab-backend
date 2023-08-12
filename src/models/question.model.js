@@ -15,14 +15,6 @@ const questionSchema = new Schema(
                 type: String,
                 default: null,
             },
-            vietnamese: {
-                type: String,
-                default: null,
-            },
-            image: {
-                type: String,
-                default: null,
-            },
             example_hint: {
                 type: String,
                 default: null,
