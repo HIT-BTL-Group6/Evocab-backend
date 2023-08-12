@@ -5,16 +5,11 @@ const pick = require('../utils/pick');
 const ExamOfUser = require('../models/examOfUser.model');
 const examOfUserService = require('../services/examOfUser.service');
 
-const getExamsOfUser = catchAsync(async (req, res, next) => {
-    const options = pick(req.query, ['sortBy', 'limit', 'page']);
-
-    const page = parseInt(options.page) || 1;
-    const limit = parseInt(options.limit) || 10;
+const getExamsOfUser = catchAsync(async (req, res) => {
+    const { sortBy, limit = 10, page = 1, ...conditions } = req.query;
     const skip = (page - 1) * limit;
-    const exams = await ExamOfUser.find().limit(limit).skip(skip).populate({
-        path: 'exam',
-        select: 'examName',
-    });
+
+    const exams = await examOfUserService.getExamsOfUser(limit, skip, conditions);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -23,21 +18,10 @@ const getExamsOfUser = catchAsync(async (req, res, next) => {
     });
 });
 
-const createExam = catchAsync(async (req, res) => {
-    const examData = req.body;
-    const newExam = await ExamOfUser.create(examData);
-
-    res.status(httpStatus.CREATED).json({
-        code: httpStatus.CREATED,
-        message: 'Create exam successfully!',
-        data: newExam,
-    });
-});
-
-const updateStartExamTime = catchAsync(async (req, res, next) => {
+const updateStartExamTime = catchAsync(async (req, res) => {
     const { startExamTime } = req.body;
-    const { examId } = req.params;
-    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { startExamTime });
+    const { examUserId } = req.params;
+    const updatedExam = await examOfUserService.updateExamOfUserByExamUserId(examUserId, { startExamTime });
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -46,10 +30,10 @@ const updateStartExamTime = catchAsync(async (req, res, next) => {
     });
 });
 
-const updateEndExam = catchAsync(async (req, res, next) => {
+const updateEndExam = catchAsync(async (req, res) => {
     const { endExamTime, result, status } = req.body;
-    const { examId } = req.params;
-    const updatedExam = await examOfUserService.updateExamOfUserById(examId, { endExamTime, result, status });
+    const { examUserId } = req.params;
+    const updatedExam = await examOfUserService.updateExamOfUserByExamUserId(examUserId, { endExamTime, result, status });
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -58,10 +42,10 @@ const updateEndExam = catchAsync(async (req, res, next) => {
     });
 });
 
-const getExamOfUser = catchAsync(async (req, res, next) => {
-    const examId = req.params.examId || req.exam.id;
+const getExamOfUser = catchAsync(async (req, res) => {
+    const examUserId = req.params.examUserId || req.examofuser.id;
 
-    const exam = await examOfUserService.getExamOfUserById(examId);
+    const exam = await examOfUserService.getExamOfUserByExamUserId(examUserId);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -70,11 +54,11 @@ const getExamOfUser = catchAsync(async (req, res, next) => {
     });
 });
 
-const updateExamOfUser = catchAsync(async (req, res, next) => {
-    const { examId } = req.params;
+const updateExamOfUser = catchAsync(async (req, res) => {
+    const { examUserId } = req.params;
     const examBody = req.body;
 
-    const exam = await examOfUserService.updateExamOfUserById(examId, examBody);
+    const exam = await examOfUserService.updateExamOfUserByExamUserId(examUserId, examBody);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -83,21 +67,20 @@ const updateExamOfUser = catchAsync(async (req, res, next) => {
     });
 });
 
-const deleteExamOfUser = catchAsync(async (req, res, next) => {
-    const { examId } = req.params;
-    const deletedExam = await examOfUserService.deleteExamOfUserById(examId);
+const deleteExamOfUser = catchAsync(async (req, res) => {
+    const { examUserId } = req.params;
+    const deletedExamUser = await examOfUserService.deleteExamOfUserByExamUserId(examUserId);
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Delete exam of user successfully!',
-        data: deletedExam,
+        data: deletedExamUser,
     });
 });
 
 module.exports = {
     getExamOfUser,
     getExamsOfUser,
-    createExam,
     updateStartExamTime,
     updateEndExam,
     updateExamOfUser,

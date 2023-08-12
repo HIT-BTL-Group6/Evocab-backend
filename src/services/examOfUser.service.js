@@ -2,15 +2,28 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const ExamOfUser = require('../models/examOfUser.model');
 
-const getExamOfUserById = async (examId) => {
-    const exam = await ExamOfUser.findById(examId).populate(['exam', 'user']);
+const getExamsOfUser = async (limit, skip, conditions) => {
+    const examsOfUserId = await ExamOfUser.find(conditions).limit(limit).skip(skip).populate({
+        path: 'exam',
+        select: 'examName',
+    });
+
+    if (!examsOfUserId) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Exams of User not found');
+    }
+    return examsOfUserId;
+};
+
+const getExamOfUserByExamUserId = async (examUserId) => {
+
+    const exam = await ExamOfUser.findById(examUserId).populate(['exam', 'user']);
 
     if (!exam) throw new ApiError(httpStatus.NOT_FOUND, 'Exam not found!');
     return exam;
 };
 
-const updateExamOfUserById = async (examId, examBody) => {
-    const updatedExam = ExamOfUser.findByIdAndUpdate(examId, examBody, { new: true });
+const updateExamOfUserByExamUserId = async (examUserId, examBody) => {
+    const updatedExam = ExamOfUser.findByIdAndUpdate(examUserId, examBody, { new: true });
 
     if (!updatedExam) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Exam not found!');
@@ -18,8 +31,8 @@ const updateExamOfUserById = async (examId, examBody) => {
     return updatedExam;
 };
 
-const deleteExamOfUserById = async (examId) => {
-    const deletedExam = await ExamOfUser.findByIdAndDelete(examId);
+const deleteExamOfUserByExamUserId = async (examUserId) => {
+    const deletedExam = await ExamOfUser.findByIdAndDelete(examUserId);
     if (!deletedExam) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Exam not found!');
     }
@@ -27,7 +40,8 @@ const deleteExamOfUserById = async (examId) => {
 };
 
 module.exports = {
-    getExamOfUserById,
-    updateExamOfUserById,
-    deleteExamOfUserById,
+    getExamOfUserByExamUserId,
+    updateExamOfUserByExamUserId,
+    deleteExamOfUserByExamUserId,
+    getExamsOfUser,
 };
