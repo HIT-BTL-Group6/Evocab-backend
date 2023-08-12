@@ -28,9 +28,9 @@ const createWord = catchAsync(async (req, res) => {
 });
 
 const getWords = catchAsync(async (req, res) => {
-    const nameTopic = req.query.nameTopic;
+    const {topicId} = req.query;
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
-    const words = await wordService.getWords(nameTopic, options);
+    const words = await wordService.getWords(topicId, options);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Words retrieved successfully!',

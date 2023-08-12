@@ -19,6 +19,10 @@ const userWordSchema = new mongoose.Schema(
                     type: String,
                     default: false,
                 },
+                note:{
+                    type:String,
+                    default: null
+                }
             },
         ],
     },

@@ -14,7 +14,7 @@ const createUserWord = catchAsync(async (req, res) => {
 });
 
 const getUserWordsController = catchAsync(async (req, res) => {
-    const filter = pick(req.query, ['userWordId']);
+    const filter = pick(req.query, ['userId']);
     const options = pick(req.query, ['sortBy', 'limit', 'page']);
     const userWords = await userWordService.getUserWords(filter, options);
     res.status(httpStatus.OK).json({
@@ -25,8 +25,8 @@ const getUserWordsController = catchAsync(async (req, res) => {
 });
 
 const getRememberUserWords = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
-    const userWords = await userWordService.getRememberUserWordsIds(userWordId);
+    const { userId } = req.params;
+    const userWords = await userWordService.getRememberUserWordsIds(userId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Remembered words retrieved successfully!',
@@ -35,9 +35,8 @@ const getRememberUserWords = catchAsync(async (req, res) => {
 });
 
 const getNotRememberUserWords = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
-    const words = await userWordService.getNotRememberUserWords(userWordId);
-    console.log(words);
+    const { userId } = req.params;
+    const words = await userWordService.getNotRememberUserWords(userId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Words not yet learned retrieved successfully',
@@ -46,8 +45,17 @@ const getNotRememberUserWords = catchAsync(async (req, res) => {
 });
 
 const getUserWordById = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
-    const userWord = await userWordService.getUserWordById(userWordId);
+    const { userId } = req.params;
+    const userWord = await userWordService.getUserWordById(userId);
+    res.status(httpStatus.OK).json({
+        code: httpStatus.OK,
+        message: 'UserWord retrieved successfully!',
+        data: userWord,
+    });
+});
+const getMeById = catchAsync(async (req, res) => {
+    const { userId } = req.user._id;
+    const userWord = await userWordService.getUserWordById(userId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'UserWord retrieved successfully!',
@@ -56,9 +64,9 @@ const getUserWordById = catchAsync(async (req, res) => {
 });
 
 const updateUserWordById = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
+    const { userId } = req.params;
     const updateBody = req.body;
-    const userWord = await userWordService.updateUserWordById(userWordId, updateBody);
+    const userWord = await userWordService.updateUserWordById(userId, updateBody);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'UserWord updated successfully!',
@@ -67,9 +75,9 @@ const updateUserWordById = catchAsync(async (req, res) => {
 });
 
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
-    const { userWordId} = req.params;
+    const { userId} = req.params;
     const wordId = req.body.wordId;
-    const wordDeleted = await userWordService.deleteWordFromUserWordById(userWordId, wordId);
+    const wordDeleted = await userWordService.deleteWordFromUserWordById(userId, wordId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Word deleted from UserWord successfully!',
@@ -78,9 +86,13 @@ const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
 });
 
 const addWordToUserWordByIdController = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
+    const { userId } = req.params;
     const {wordId,isRemember} = req.body;
-    const userWords = await userWordService.addWordToUserWordById(userWordId,wordId,isRemember );
+    let {note} = req.body;
+    if(!note){
+        note = null;
+    }
+    const userWords = await userWordService.addWordToUserWordById(userId,wordId,isRemember,note);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Word added to UserWord successfully!',
@@ -89,18 +101,19 @@ const addWordToUserWordByIdController = catchAsync(async (req, res) => {
 });
 
 const updateWordFromUserWordById = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
-    const { wordId} = req.body;
-    const updatedUserWord = await userWordService.updateWordIsRemember(userWordId, wordId);
+    const { userId } = req.params;
+    const { wordId,isRemember,note} = req.body;
+    const updatedUserWord = await userWordService.updateWordFromUserWordById(userId,wordId,note,isRemember);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'Words updated in UserWord successfully!',
         data: updatedUserWord,
     });
 });
+
 const deleteUserWordById = catchAsync(async (req, res) => {
-    const { userWordId } = req.params;
-    const userWordDeleted = await userWordService.deleteUserWordById(userWordId);
+    const { userId } = req.params;
+    const userWordDeleted = await userWordService.deleteUserWordById(userId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
         message: 'UserWord deleted successfully!',
@@ -146,4 +159,5 @@ module.exports = {
     updateWordFromUserWordById,
     updateRememberWord,
     getReviewQuestion,
+    getMeById
 };
