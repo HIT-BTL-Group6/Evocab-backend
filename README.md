@@ -11,27 +11,10 @@ Create an effective English vocabulary learning app called EVOCAB
 -   **Dependency management**: with [Yarn](https://yarnpkg.com)
 -   **Environment variables**: using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
 -   **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
--   **Santizing**: sanitize request data against xss and query injection
--   **Linting**: with [ESLint](https://eslint.org) and [Prettier](https://prettier.io)
+-   **Linting**:  [Prettier](https://prettier.io)
 -   **Editor config**: consistent editor configuration using [EditorConfig](https://editorconfig.org)
 
-## Environment Variables
 
-The environment variables can be found and modified in the `.env` file. They come with these default values:
-
-```bash
-# Port number
-PORT=3000
-
-# URL of the Mongo DB
-MONGODB_URL=mongodb://127.0.0.1:27017/EVOCAB-Backend
-
-# JWT
-# JWT secret key
-JWT_SECRET_KEY=evocabbackend
-# Number of minutes after which an access token expires
-JWT_ACCESS_EXPIRES_IN=30
-```
 
 ## Project Structure
 
@@ -49,18 +32,3 @@ src\
  |--app.js          # Express app
  |--index.js        # App entry point
 ```
-
-### API Endpoints
-
-List of available routes:
-
-**Auth routes**:\
-`POST /api/v1/auth/register` - register\
-`POST /api/v1/auth/login` - login\
-
-**User routes**:\
-`POST /api/v1/users` - create a user\
-`GET /api/v1/users` - get all users\
-`GET /api/v1/users/:userId` - get user\
-`PATCH /api/v1/users/:userId` - update user\
-`DELETE /api/v1/users/:userId` - delete user
