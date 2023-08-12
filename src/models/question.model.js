@@ -28,8 +28,7 @@ const questionSchema = new Schema(
             },
             choices: [
                 {
-                    type: Schema.Types.ObjectId,
-                    ref: 'Word',
+                    type: String,
                 },
             ],
         },
