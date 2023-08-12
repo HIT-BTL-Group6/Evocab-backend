@@ -41,7 +41,6 @@ const getNotRememberUserWords = async (userId) => {
     }
     const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
     const wordIds = notRememberedWords.map((word) => word.wordId.toString());
-    console.log(wordIds);
     if (wordIds.length === 0 || !wordIds) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
     }
