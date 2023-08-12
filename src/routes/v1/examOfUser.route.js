@@ -17,6 +17,6 @@ examOfUserRouter
 
 examOfUserRouter.route('/update-start-exam/:examId').put(examOfUserController.updateStartExamTime);
 
-examOfUserRouter.route('/update-end-exam/:examId').put(examOfUserController.updateEndExamTimeResult);
+examOfUserRouter.route('/update-end-exam/:examId').put(examOfUserController.updateEndExam);
 
 module.exports = examOfUserRouter;
