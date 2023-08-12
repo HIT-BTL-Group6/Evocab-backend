@@ -53,7 +53,9 @@ const deleteWordFromTopicById = {
         topicId: Joi.string().custom(objectId).required(),
         wordId: Joi.string().custom(objectId),
     }),
-    
+    query: Joi.object().keys({
+        wordId: Joi.string().custom(objectId),
+    })  
 };
 
 module.exports = {

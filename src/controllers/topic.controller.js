@@ -47,7 +47,8 @@ const updateTopicById = catchAsync(async (req, res) => {
 });
 
 const deleteWordFromTopicByIdController = catchAsync(async (req, res) => {
-    const { topicId, wordId } = req.params;
+    const { topicId } = req.params;
+    const {wordId} = req.query;
     const wordDeleted = await topicService.deleteWordFromTopicById(topicId, wordId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
@@ -59,7 +60,7 @@ const deleteWordFromTopicByIdController = catchAsync(async (req, res) => {
 const addWordToTopicByIdController = catchAsync(async (req, res) => {
     const { topicId } = req.params;
     const words = req.body.words;
-
+    console.log(words);
     const topics = await topicService.addWordToTopicById(topicId, { words });
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
