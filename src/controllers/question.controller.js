@@ -11,10 +11,17 @@ const getQuestions = catchAsync(async (req, res, next) => {
     const page = parseInt(options.page) || 1;
     const limit = parseInt(options.limit) || 10;
     const skip = (page - 1) * limit;
-    const questions = await Question.find().limit(limit).skip(skip).populate({
-        path: 'topic',
-        select: 'nameTopic',
-    });
+    const questions = await Question.find()
+        .limit(limit)
+        .skip(skip)
+        .populate({
+            path: 'topic',
+            select: 'nameTopic',
+        })
+        .populate({
+            path: 'answer.word_correct',
+            select: 'example word image vietnamese',
+        });
 
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
