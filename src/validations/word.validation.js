@@ -12,7 +12,7 @@ const wordValidation = {
         nameTopic: Joi.string().required(),
     }),
     getWords:Joi.object().keys({
-        nameTopic:Joi.string(),
+        wordId: Joi.string().custom(objectId),
         sortBy: Joi.string(),
         limit: Joi.number().integer(),
         page: Joi.number().integer(),

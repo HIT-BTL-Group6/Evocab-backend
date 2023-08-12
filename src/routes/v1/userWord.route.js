@@ -6,39 +6,39 @@ const userWordValidation = require('../../validations/userWord.validation');
 const userWordController = require('../../controllers/userWord.controller');
 const userWordRouter = express.Router();
 
-userWordRouter.use(authMiddleware);
 userWordRouter
     .route('/')
     .post(authMiddleware, roles('admin'), validate(userWordValidation.createUserWord), userWordController.createUserWord)
-    .get(authMiddleware, validate(userWordValidation.getUserWords), userWordController.getUserWordsController);
-// userWordRouter.route('/not-remember/:userWordId').get(authMiddleware, userWordController.getNotRememberUserWords);
-// userWordRouter.route('/remember/:userWordId').get(authMiddleware, userWordController.getRememberUserWords);
+    .get(authMiddleware,roles('admin'), validate(userWordValidation.getUserWords), userWordController.getUserWordsController);
+
 userWordRouter
-    .route('/:userWordId')
-    .get(authMiddleware, roles('admin'), validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
+    .route('/:userId')
+    .get(authMiddleware, validate(userWordValidation.getUserWordById), userWordController.getUserWordById)
+    .get(validate(userWordValidation.getUserWordById), userWordController.getMeById)
+userWordRouter
+    .route('/:userId')
     .put(
         authMiddleware,
-        roles('admin'),
         validate(userWordValidation.updateUserWordById),
         userWordController.updateUserWordById
     )
     .delete(authMiddleware,roles('admin'), validate(userWordValidation.deleteUserWordById), userWordController.deleteUserWordById);
 userWordRouter
-    .route('/delete-word/:userWordId')
+    .route('/delete-word/:userId')
     .delete(
         validate(userWordValidation.deleteWordFromUserWordById),
         userWordController.deleteWordFromUserWordByIdController
     )
 userWordRouter
-    .route('/add-word/:userWordId')
+    .route('/add-word/:userId')
     .post(
         validate(userWordValidation.addWordToUserWordById),
         userWordController.addWordToUserWordByIdController
     );
-userWordRouter.route('/remember-word/:userWordId').get( userWordController.getRememberUserWords);
-userWordRouter.route('/not-remember-word/:userWordId').get(userWordController.getNotRememberUserWords);
+userWordRouter.route('/remember-word/:userId').get( userWordController.getRememberUserWords);
+userWordRouter.route('/not-remember-word/:userId').get(userWordController.getNotRememberUserWords);
 userWordRouter
-    .route('/update-word-remember/:userWordId')
+    .route('/update-word/:userId')
     .put(
         validate(userWordValidation.updateWordFromUserWordById),
         userWordController.updateWordFromUserWordById

@@ -33,10 +33,11 @@ const deleteWordById = async (wordId) => {
     }
     return deletedWord;
 };
-const getWords = async (nameTopic, options) => {
+const getWords = async (topicId, options) => {
     const filter = {};
+    const nameTopic = await Word.findById(topicId);
     if (nameTopic) {
-        filter.nameTopic = nameTopic;
+        filter.nameTopic= nameTopic;
     }
     const words = await Word.paginate(filter, options);
     if (!words || words.length === 0) {

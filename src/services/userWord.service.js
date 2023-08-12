@@ -21,8 +21,8 @@ const getUserWords = async (filter, options) => {
     }
     return userWords;
 };
-const getRememberUserWordsIds = async (userWordId) => {
-    const userWord = await UserWord.findById(userWordId);
+const getRememberUserWordsIds = async (userId) => {
+    const userWord = await UserWord.findOne({ userId: userId });
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
@@ -34,14 +34,14 @@ const getRememberUserWordsIds = async (userWordId) => {
     return wordIds;
 };
 
-const getNotRememberUserWords = async (userWordId) => {
-    const userWord = await UserWord.findById(userWordId);
+const getNotRememberUserWords = async (userId) => {
+    const userWord = await UserWord.findOne({ userId: userId });
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
     const notRememberedWords = userWord.words.filter((word) => word.isRemember === 'false');
     const wordIds = notRememberedWords.map((word) => word.wordId.toString());
-    
+    console.log(wordIds);
     if (wordIds.length === 0 || !wordIds) {
         throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'No not-remembered words found');
     }
@@ -50,37 +50,47 @@ const getNotRememberUserWords = async (userWordId) => {
     return words;
 };
 
-const getUserWordById = async (userWordId) => {
-    const userWord = await UserWord.findById(userWordId);
+const getUserWordById = async (userId) => {
+    const userWord = await UserWord.findOne({ userId: userId });
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
     return userWord;
 };
 
-const updateUserWordById = async (userWordId, updateBody) => {
+const updateUserWordById = async (userId, updateBody) => {
+    const isUserWord = await UserWord.findOne({ userId: userId });
+    if(!isUserWord){
+        throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
+    }
+    const userWordId = isUserWord._id;
     const userWord = await UserWord.findByIdAndUpdate(userWordId, updateBody, { new: true });
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
     return userWord;
 };
-const addWordToUserWordById = async (userWordId, wordIdBody, isRememberBody) => {
-    const rawUserWord = await UserWord.findById(userWordId);
+const addWordToUserWordById = async (userId, wordId, isRemember,note) => {
+    const rawUserWord = await UserWord.findOne({ userId: userId });
     if (!rawUserWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
     }
+    const wordExists = rawUserWord.words.some(word => word.wordId.toString() === wordId);
+    if (wordExists) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Word already exists in UserWord');
+    }
     const newWord = {
-        wordId: wordIdBody,
-        isRemember: isRememberBody
+        wordId: wordId,
+        isRemember: isRemember,
+        note:note
     };
     rawUserWord.words.push(newWord);
 
     await rawUserWord.save();
     return rawUserWord;
 };
-const deleteWordFromUserWordById = async (userWordId, wordId) => {
-    const userWord = await UserWord.findById(userWordId);
+const deleteWordFromUserWordById = async (userId, wordId) => {
+    const userWord = await UserWord.findOne({ userId: userId });
     if (!userWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'userWord not found');
     }
@@ -92,7 +102,12 @@ const deleteWordFromUserWordById = async (userWordId, wordId) => {
     const updatedUserWord = await userWord.save();
     return updatedUserWord;
 };
-const deleteUserWordById = async (userWordId) => {
+const deleteUserWordById = async (userId) => {
+    const userWord = await UserWord.findOne({ userId: userId });
+    if (!userWord) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'userWord not found');
+    }
+    const userWordId = userWord._id;
     const deletedUserWord = await UserWord.findByIdAndDelete(userWordId);
     if (!deletedUserWord) {
         throw new ApiError(httpStatus.NOT_FOUND, 'User word not found');
@@ -100,17 +115,19 @@ const deleteUserWordById = async (userWordId) => {
     return deletedUserWord;
 };
 
-const updateWordIsRemember = async (userWordId, wordId) => {
-    const userWord = await UserWord.findById(userWordId);
+const updateWordFromUserWordById = async (userId, wordId,note,isRemember) => {
+    
+    const userWord = await UserWord.findOne({ userId: userId });
     if (!userWord) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'UserWord not found');
+        throw new ApiError(httpStatus.NOT_FOUND, 'userWord not found');
     }
     const wordIndex = userWord.words.findIndex((word) => word.wordId.toString() === wordId);
     if (wordIndex === -1) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Word not found in UserWord');
     }
-    const isRemember = userWord.words[wordIndex].isRemember;
-    userWord.words[wordIndex].isRemember = isRemember === "true" ? "false" : "true";
+    userWord.words[wordIndex].isRemember = isRemember;
+    userWord.words[wordIndex].note = note;
+    
     await userWord.save();
     return userWord;
 };
@@ -153,7 +170,7 @@ module.exports = {
     deleteUserWordById,
     deleteWordFromUserWordById,
     addWordToUserWordById,
-    updateWordIsRemember,
+    updateWordFromUserWordById,
     getReviewQuestion,
     updateRememberWord
 };
