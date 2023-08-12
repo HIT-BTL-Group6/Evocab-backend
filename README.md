@@ -11,28 +11,24 @@ Create an effective English vocabulary learning app called EVOCAB
 -   **Dependency management**: with [Yarn](https://yarnpkg.com)
 -   **Environment variables**: using [dotenv](https://github.com/motdotla/dotenv) and [cross-env](https://github.com/kentcdodds/cross-env#readme)
 -   **Security**: set security HTTP headers using [helmet](https://helmetjs.github.io)
--   **Linting**: [Prettier](https://prettier.io)
+-   **Linting**:  [Prettier](https://prettier.io)
 -   **Editor config**: consistent editor configuration using [EditorConfig](https://editorconfig.org)
 
-```
 
 ## Project Structure
 
 ```
-
 src\
- |--config\ # Environment variables and configuration related things
-|--controllers\ # Route controllers (controller layer)
-|--docs\ # Swagger files
-|--middlewares\ # Custom express middlewares
-|--models\ # Mongoose models (data layer)
-|--routes\ # Routes
-|--services\ # Business logic (service layer)
-|--utils\ # Utility classes and functions
-|--validations\ # Request data validation schemas
-|--app.js # Express app
-|--index.js # App entry point
-
-```
+ |--config\         # Environment variables and configuration related things
+ |--controllers\    # Route controllers (controller layer)
+ |--docs\           # Swagger files
+ |--middlewares\    # Custom express middlewares
+ |--models\         # Mongoose models (data layer)
+ |--routes\         # Routes
+ |--services\       # Business logic (service layer)
+ |--utils\          # Utility classes and functions
+ |--validations\    # Request data validation schemas
+ |--app.js          # Express app
+ |--index.js        # App entry point
 
 ```
