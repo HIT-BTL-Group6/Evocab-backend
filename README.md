@@ -15,7 +15,6 @@ Create an effective English vocabulary learning app called EVOCAB
 -   **Editor config**: consistent editor configuration using [EditorConfig](https://editorconfig.org)
 
 
-
 ## Project Structure
 
 ```
@@ -31,4 +30,5 @@ src\
  |--validations\    # Request data validation schemas
  |--app.js          # Express app
  |--index.js        # App entry point
+
 ```
