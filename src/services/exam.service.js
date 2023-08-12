@@ -2,6 +2,14 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const Exam = require('../models/exam.model');
 
+const getExams = async (limit, skip, conditions) => {
+    const exams = await Exam.find(conditions).limit(limit).skip(skip);
+    if (!exams) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Exams not found');
+    }
+    return exams;
+};
+
 const getExamById = async (examId) => {
     const exam = await Exam.findById(examId).populate('question');
 
@@ -41,4 +49,5 @@ module.exports = {
     createExam,
     updateExamById,
     deleteExamById,
+    getExams,
 };
