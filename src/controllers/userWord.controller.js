@@ -76,7 +76,7 @@ const updateUserWordById = catchAsync(async (req, res) => {
 
 const deleteWordFromUserWordByIdController = catchAsync(async (req, res) => {
     const { userId} = req.params;
-    const wordId = req.body.wordId;
+    const {wordId} = req.query;
     const wordDeleted = await userWordService.deleteWordFromUserWordById(userId, wordId);
     res.status(httpStatus.OK).json({
         code: httpStatus.OK,
