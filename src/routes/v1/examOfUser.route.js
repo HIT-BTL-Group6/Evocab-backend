@@ -7,16 +7,18 @@ const examOfUserRouter = express.Router();
 
 examOfUserRouter.use(authMiddleware);
 
-examOfUserRouter.route('/').get(examOfUserController.getExamsOfUser).post(examOfUserController.createExam);
+examOfUserRouter.route('/exam-of-me').get(examOfUserController.getExamOfUser);
+
+examOfUserRouter.route('/').get(roles('admin'), examOfUserController.getExamsOfUser);
 
 examOfUserRouter
-    .route('/:examId')
-    .get(examOfUserController.getExamOfUser)
-    .put(examOfUserController.updateExamOfUser)
-    .delete(examOfUserController.deleteExamOfUser);
+    .route('/:examUserId')
+    .get(roles('admin'), examOfUserController.getExamOfUser)
+    .put(roles('admin'), examOfUserController.updateExamOfUser)
+    .delete(roles('admin'), examOfUserController.deleteExamOfUser);
 
-examOfUserRouter.route('/update-start-exam/:examId').put(examOfUserController.updateStartExamTime);
+examOfUserRouter.route('/update-start-exam/:examUserId').put(examOfUserController.updateStartExamTime);
 
-examOfUserRouter.route('/update-end-exam/:examId').put(examOfUserController.updateEndExam);
+examOfUserRouter.route('/update-end-exam/:examUserId').put(examOfUserController.updateEndExam);
 
 module.exports = examOfUserRouter;
