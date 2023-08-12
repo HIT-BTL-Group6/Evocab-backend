@@ -11,10 +11,10 @@ authRouter.route('/login').post(login);
 
 authRouter.route('/forgot-password').post(forgotPassword);
 
+authRouter.route('/reset-password').post(resetPassword);
+
 authRouter.use(authMiddleware);
 
 authRouter.route('/me').get(getUser);
-
-authRouter.route('/reset-password').post(resetPassword);
 
 module.exports = authRouter;
