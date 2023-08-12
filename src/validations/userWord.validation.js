@@ -54,7 +54,7 @@ const deleteWordFromUserWordById = {
     params: Joi.object().keys({
         userId: Joi.string().custom(objectId).required(),
     }),
-    body: Joi.object().keys({
+    query: Joi.object().keys({
         wordId: Joi.string().custom(objectId).required(),
     }),
 };
